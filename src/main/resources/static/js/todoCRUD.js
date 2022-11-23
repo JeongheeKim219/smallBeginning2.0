@@ -1,5 +1,5 @@
 function addTodo(result){
-    var resultTodo = JSON.parse(result);
+//    var resultTodo = JSON.parse(result);
 
     if(resultTodo.length > 0){
         var table4Todo = document.getElementById("toDoListsTable");
@@ -40,7 +40,7 @@ function addTodo(result){
 }
 
 function addTodo4edit(result){
-    var resultTodo = JSON.parse(result);
+//    var resultTodo = JSON.parse(result);
 
     if(resultTodo.length > 0){
 /*        var table4Todo = document.getElementById("toDoListsTable");*/

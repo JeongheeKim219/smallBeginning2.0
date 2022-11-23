@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Title</title>
 
-<script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
 
 <!-- navbar 및 전체 css 관련 !-->
@@ -23,8 +23,6 @@
 <body>
 <div th:fragment = "sideMenuFragment">
     <div class="content-left">
-        <div id="login" th:if="${#strings.isEmpty(session.memberCode)}" th:text="'login'"></div><div id="logout" th:unless="${#strings.isEmpty(session.memberCode)}" th:text="'logout'"></div>
-        <br>
         <div class="main-wrap">
             <span id="main-day" class="main-day"></span>
             <span id="main-year" class="main-day"></span>
@@ -38,7 +36,7 @@
                     <input type="text" placeholder="please write here" id="toDoContent" class="input-box" name="toDoContent">
                     <input type="date" id="planDate" class="input-box" name="planDate" />
                     <input type="color" id="toDoColor" name="toDoColor" value="#16aaad" list="colors4palette" />
-                    <input type="text" id="sessionCode" name="memberCode" th:value="${session.memberCode}" />
+                    <input type="text" id="sessionCode" name="UserCode" th:value="${session.UserCode}" />
                     <datalist id="colors4palette">
                         <option>#355070</option>
                         <option>#6D597A</option>

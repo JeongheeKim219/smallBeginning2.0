@@ -4,23 +4,23 @@
 <meta charset="UTF-8">
 <title>Small Begin</title>
 
-<script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript" src="/js/common.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <link th:href="@{/css/common.css}" rel="stylesheet" />
 <link th:href="@{/css/navbar.css}" rel="stylesheet" />
 <link th:href="@{/css/calendar3.css}" rel="stylesheet" />
 <link th:href="@{/css/resetCSS.css}" rel="stylesheet" />
-<script th:src="@{/js/navbar.js}"></script>
-<script th:src="@{/js/calendarDataShow.js}"></script>
-<script th:src="@{/js/calendar1.js}"></script>
-<script th:src="@{/js/todoCRUD.js}"></script>
-<script th:src="@{/js/common.js}"></script>
+<!--<script th:src="@{/js/navbar.js}"></script>-->
+<!--<script th:src="@{/js/calendarDataShow.js}"></script>-->
+<!--<script th:src="@{/js/calendar1.js}"></script>-->
+<!--<script th:src="@{/js/todoCRUD.js}"></script>-->
+<!--<script th:src="@{/js/common.js}"></script>-->
+<script th:src="@{/js/login.js}"></script>
 
 </head>
 <body>
+<div id="navbar" class="navbar" th:replace="/fragment/navbar.html :: fragment-nav"></div>
 <th:block th:replace="fragment/sideMenu :: sideMenuFragment"></th:block>
-<p id="session" th:text="${session.memberCode}"></p>
 <div id="container">
     <div class="main">
         <div class="content-wrap">
@@ -57,10 +57,11 @@
 <script>
 $(function(){
 
-    attachMain();
-    var mainThisMonth = clickDate();
-    getSession();
-    inputPlanDate();
+<!--    attachMain();-->
+<!--    var mainThisMonth = clickDate();-->
+<!--    inputPlanDate();-->
+
+    const baseUrl = "http://localhost:8080";
 
     $("#prev").click(function(){
         mainThisMonth = prev(mainThisMonth);
@@ -147,14 +148,17 @@ $(function(){
     });
 
     $("#login").on("click", function(){
-        window.location.href = "/login";
+        window.location.href = "/snsLogin";
+<!--        let params = (new URL(document.location)).searchParams;-->
+<!--        let code = params.get('code');-->
+<!--        console.log(code);-->
     });
 
     $("#logout").on("click", function(){
         window.location.href = "/logout";
     });
 
-   loadCalendar();
+<!--   loadCalendar();-->
 });
 </script>
 </html>

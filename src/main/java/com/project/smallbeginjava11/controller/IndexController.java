@@ -1,35 +1,27 @@
 package com.project.smallbeginjava11.controller;
 
-import com.project.smallbeginjava11.entity.Todo;
 //import com.project.smallbeginjava11.service.CalendarService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.text.ParseException;
-import java.util.List;
 import java.util.Map;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
-public class CalendarController {
+public class IndexController {
 //
 //    private final CalendarService calendarService;
-//
-//    @RequestMapping("/")
-//    public ModelAndView calendar1(@RequestParam @Nullable Map<String, String> param){
-//
-//        if(param == null){
-//            ModelAndView modelAndView = new ModelAndView("calendar1");
-//            return modelAndView;
-//        }else{
-//            String selectedDate = param.get("param");
-//            ModelAndView modelAndView = new ModelAndView("calendar1");
-//            return modelAndView;
-//        }
-//    }
+
+    @RequestMapping("/index")
+    public String Index(@RequestParam @Nullable Map<String, String> param){
+        return "index";
+    }
 //
 //    @Transactional
 //    @RequestMapping(value="/readToDoList")

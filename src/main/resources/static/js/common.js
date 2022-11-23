@@ -83,7 +83,7 @@ function checkToDo(trId, toDoState){
 }
 
 function readToDo(clickedDate){
-    var memberCode = getSession();
+//    var UserCode = getSession();
     if (!clickedDate) clickedDate = getDate4Ajax($(".active").attr("id"));
 
      $.ajax({
@@ -92,7 +92,7 @@ function readToDo(clickedDate){
              contentType: 'application/x-www-form-urlencoded; charset=utf-8',
              dataType : "text",
              data : {"selectedDate" : clickedDate,
-                     "memberCode" : memberCode
+//                     "UserCode" : UserCode
              },
              success : function(result){
                  //기존 테이블 삭제
@@ -109,7 +109,7 @@ function readToDo(clickedDate){
 
 function readToDoInMonth(selectedDate){
     if (!selectedDate) selectedDate = getDate4Ajax($(".active").attr("id"));
-    var memberCode = getSession();
+//    var UserCode = getSession();
     var selectedMonth = selectedDate.slice(0, 7);
 
     $.ajax({
@@ -118,7 +118,7 @@ function readToDoInMonth(selectedDate){
         contentType: 'application/x-www-form-urlencoded; charset=utf-8',
         dataType : "JSON",
         data : {"selectedMonth" : selectedMonth,
-                "memberCode" : memberCode
+//                "UserCode" : UserCode
         },
         success : function(result){
             addTodoOnCalendar(result);

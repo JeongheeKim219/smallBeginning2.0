@@ -280,7 +280,7 @@ function checkToDoInTable(trId, result) {
 var readToDoInMonth = function readToDoInMonth(selectedDate){
     if (!selectedDate) selectedDate = getDate4Ajax($(".active").attr("id"));
     var selectedMonth = selectedDate.slice(0, 7);
-    var memberCode = getSession();
+    var UserCode = getSession();
 
     $.ajax({
         url : "/readToDoInMonth",
@@ -288,7 +288,7 @@ var readToDoInMonth = function readToDoInMonth(selectedDate){
         contentType: 'application/x-www-form-urlencoded; charset=utf-8',
         dataType : "JSON",
         data : {"selectedMonth" : selectedMonth,
-                "memberCode" : memberCode
+                "UserCode" : UserCode
         },
         success : function(result){
             addTodoOnCalendar(result);
@@ -396,4 +396,17 @@ function loadCalendar(pointDate){
     readToDo(getDate4Ajax(clickedDate));
     readToDoInMonth(getDate4Ajax(clickedDate));
 
+}
+
+
+function getDate4Ajax(idStr){
+    if(idStr != ""){
+        dateStr = "";
+        dateStr += idStr.slice(0, 4);
+        dateStr += "-";
+        dateStr += idStr.slice(4, 6);
+        dateStr += "-";
+        dateStr += idStr.slice(-2);
+        return dateStr;
+    }
 }
