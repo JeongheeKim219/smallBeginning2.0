@@ -1,4 +1,4 @@
-package com.project.smallbeginjava11.auth.dto;
+package com.project.smallbeginjava11.oauth.dto;
 
 
 import com.project.smallbeginjava11.entity.Member;

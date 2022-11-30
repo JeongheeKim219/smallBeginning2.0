@@ -10,12 +10,13 @@ import javax.persistence.*;
 @Getter
 @Builder
 @Entity
+@Table(name = "Member")
 public class Member extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ_GNR")
-    @SequenceGenerator(sequenceName = "MEMBER_ID_SEQ", name = "MEMBER_SEQ_GNR", allocationSize = 1, initialValue = 1)
-    private Long memberId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ_GNR")
+    @SequenceGenerator(sequenceName = "USER_ID_SEQ", name = "USER_SEQ_GNR", allocationSize = 1, initialValue = 1)
+    private Long userId;
 
     @Column(nullable = false)
     private String email;

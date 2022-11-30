@@ -1,4 +1,4 @@
-package com.project.smallbeginjava11.auth;
+package com.project.smallbeginjava11.oauth;
 
 import com.project.smallbeginjava11.entity.Role;
 import lombok.RequiredArgsConstructor;

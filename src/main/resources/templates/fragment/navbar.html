@@ -14,8 +14,11 @@
                     <div class="nav-mobile"><a id="nav-toggle" href="#!"><span></span></a></div>
                     <ul class="nav-list">
                         <li>
-                            <div id="login" th:text="'login'"></div>
+                            <div id="buttonDiv"></div>
+                        </li>
+                        <li>
                             <div id="logout" th:text="'logout'"></div>
+                        </li>
 <!--                            <div id="login" th:if="${#strings.isEmpty(session.UserCode)}" th:text="'login'"></div>-->
 <!--                            <div id="logout" th:unless="${#strings.isEmpty(session.UserCode)}" th:text="'logout'"></div>-->
 <!--                        </li>-->
@@ -28,7 +31,7 @@
 <!--                        <li>-->
 <!--                            <a href="/mypage">Mypage</a>-->
 <!--                        </li>-->
-<!--                    </ul>-->
+                    </ul>
                 </nav>
             </div>
         </section>

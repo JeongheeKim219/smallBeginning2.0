@@ -1,7 +1,6 @@
-package com.project.smallbeginjava11.auth;
+package com.project.smallbeginjava11.oauth;
 
-import com.project.smallbeginjava11.auth.dto.OAuthAttributes;
-import com.project.smallbeginjava11.auth.dto.SessionUser;
+import com.project.smallbeginjava11.oauth.dto.OAuthAttributes;
 import com.project.smallbeginjava11.entity.Member;
 import com.project.smallbeginjava11.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +35,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         Member member = saveOrUpdate(attributes);
-        httpSession.setAttribute("user", new SessionUser(member));
+        httpSession.setAttribute("user", member);
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(member.getRoleKey())),
@@ -47,8 +46,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     private Member saveOrUpdate(OAuthAttributes attributes) {
         Member member = memberRepository.findByEmail(attributes.getEmail())
-                .map(entity -> entity.update(attributes.getName()))
-                .orElse(attributes.toEntity());
+                .orElse(attributes.toEntity())
+                .update(attributes.getName());
 
         return memberRepository.save(member);
     }
