@@ -8,6 +8,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.project.smallbeginjava11.entity.Member;
 import com.project.smallbeginjava11.entity.Role;
 import com.project.smallbeginjava11.oauth.config.JWTUtils;
+import com.project.smallbeginjava11.oauth.dto.GoogleOAuthTokenDto;
 import com.project.smallbeginjava11.oauth.dto.OAuthAttributes;
 import com.project.smallbeginjava11.oauth.property.GoogleOAuthProperties;
 import com.project.smallbeginjava11.repository.MemberRepository;
@@ -30,7 +31,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -66,13 +66,39 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         return memberRepository.findById(id).orElse(null);
     }
 
-    public String loginOAuthGoogle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public String loginOAuthGoogle(HttpServletRequest request) throws Exception {
+        GoogleOAuthTokenDto tokenDto = exchangeCodeToToken(request);
+
+        Member member = verifyIDToken(tokenDto.getIdToken());
+        if (member == null) {
+            throw new IllegalArgumentException();
+        }
+        member = createOrUpdateUser(member);
+        return jwtUtils.createToken(member, false);
+    }
+
+    public GoogleOAuthTokenDto exchangeCodeToToken(HttpServletRequest request) throws Exception {
         String code = request.getParameter("code");
         HttpHeaders headers = new HttpHeaders();
         RestTemplate restTemplate = new RestTemplate();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        MultiValueMap<String, String> parameters = setParameter(code);
+
+        HttpEntity<MultiValueMap<String,String>> restRequest = new HttpEntity<>(parameters, headers);
+
+        URI uri = URI.create("https://oauth2.googleapis.com/token");
+        ResponseEntity<GoogleOAuthTokenDto> restResponse = restTemplate.postForEntity(uri, restRequest, GoogleOAuthTokenDto.class);
+        GoogleOAuthTokenDto tokenDto = restResponse.getBody();
+
+        System.out.println(tokenDto.toString());
+
+        return tokenDto;
+    }
+
+    public MultiValueMap<String, String> setParameter(String code) {
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+
         parameters.add("code", code);
         parameters.add("client_id", googleOAuthProperties.getClientId());
         parameters.add("client_secret", googleOAuthProperties.getClientSecret());
@@ -80,24 +106,7 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         parameters.add("access_type", googleOAuthProperties.getAccessType());
         parameters.add("grant_type", "authorization_code");
 
-        HttpEntity<MultiValueMap<String,String>> restRequest = new HttpEntity<>(parameters, headers);
-
-        URI uri = URI.create("https://oauth2.googleapis.com/token");
-
-        ResponseEntity<String> restResponse = restTemplate.postForEntity(uri, restRequest, String.class);
-        String bodys = restResponse.getBody();
-        System.out.println(bodys);
-
-        response.sendRedirect("http://localhost:8080");
-
-//        Member member = verifyIDToken(requestBody.getIdToken());
-//        if (member == null) {
-//            throw new IllegalArgumentException();
-//        }
-//        member = createOrUpdateUser(member);
-//        return jwtUtils.createToken(member, false);
-
-        return "null";
+        return parameters;
     }
 
     @Transactional
@@ -123,9 +132,9 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
             GoogleIdToken.Payload payload = idTokenObj.getPayload();
             String email = payload.getEmail();
             String nickname = (String) payload.get("name");
-
             return new Member(email, nickname);
         } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -137,7 +146,6 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
 
         return memberRepository.save(member);
     }
-
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
