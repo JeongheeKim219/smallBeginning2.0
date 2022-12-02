@@ -4,19 +4,21 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Builder
 @Entity
+@Setter
 @Table(name = "Member")
-public class Member extends BaseTimeEntity {
+public class Member extends BaseTimeEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ_GNR")
     @SequenceGenerator(sequenceName = "USER_ID_SEQ", name = "USER_SEQ_GNR", allocationSize = 1, initialValue = 1)
-    private Long userId;
+    private Long memberId;
 
     @Column(nullable = false)
     private String email;
@@ -32,10 +34,9 @@ public class Member extends BaseTimeEntity {
     private int activeState;
 
     @Builder
-    public Member(String email, String nickname, Role role) {
+    public Member(String email, String nickname) {
         this.email = email;
         this.nickname = nickname;
-        this.role = role;
     }
 
 
@@ -44,7 +45,7 @@ public class Member extends BaseTimeEntity {
         return this;
     }
 
-    public String getRoleKey() {
+    public String getRole() {
         return this.role.getKey();
     }
 

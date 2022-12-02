@@ -7,8 +7,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 
@@ -20,9 +18,10 @@ public class IndexController {
 
     @RequestMapping("/index")
     public String Index(@RequestParam @Nullable Map<String, String> param){
+        System.out.println("또 와이라노...");
         return "index";
     }
-//
+    //
 //    @Transactional
 //    @RequestMapping(value="/readToDoList")
 //    @ResponseBody

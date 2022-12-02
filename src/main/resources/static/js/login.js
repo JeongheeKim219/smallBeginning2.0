@@ -1,7 +1,7 @@
 
 
   const clientId = '65473999009-3hch27kdnnd73dmj2uuk5u8t5u28a0mq.apps.googleusercontent.com';
-  const redirectUri = 'http://localhost:8080/login/oauth2/code/google';
+  const redirectUri = 'http://localhost:8080/oauth/login/google';
   var fragmentString = location.hash.substring(1);
 
   // Parse query string to see if page request is coming from OAuth 2.0 server.
@@ -22,9 +22,44 @@
  function handleCredentialResponse(response) {
 //   console.log("Encoded JWT ID token: " + response.credential);
     console.log(response);
+    $.ajax({
+                // [요청 시작 부분]
+                url: 'http://localhost:8080/oauth/login/google',
+                data : {"???": "왜째서"}, //json 데이터
+//                data : JSON.stringify(response), //json 데이터
+                type: "POST", // 전송 타입
+                async: true, // 비동기 여부
+                timeout: 5000, // 타임 아웃 설정
+                dataType: "JSON", // 응답받을 데이터 타입 (XML,JSON,TEXT,HTML)
+                withCredentials: true,
+                contentType: "application/json; charset=utf-8", //헤더의 Content-Type을 설정
+                beforeSend : function(xhr){ // 다중 헤더 추가 실시
+                    xhr.setRequestHeader("Accept", "application/json; charset=utf-8"); //헤더의 Content-Type을 설정
+                    xhr.setRequestHeader('Referrer-Policy', 'no-referrer-when-downgrade');
+                },
 
+                // [응답 확인 부분]
+                success: function(response) {
+                    console.log("");
+                    console.log("[requestPostBodyJson] : [response] : " + JSON.stringify(response));
+                    console.log("");
+                },
 
- }
+                // [에러 확인 부분]
+                error: function(xhr) {
+                    console.log("");
+                    console.log("[requestPostBodyJson] : [error] : " + xhr);
+                    console.log("");
+                },
+
+                // [완료 확인 부분]
+                complete:function(data,textStatus) {
+                    console.log("");
+                    console.log("[requestPostBodyJson] : [complete] : " + textStatus);
+                    console.log("");
+                }
+            });
+}
 
 /**
 * Button Rendering
@@ -40,6 +75,76 @@
    );
    google.accounts.id.prompt(); // also display the One Tap dialog
  }
+
+
+/**
+* response
+*/
+function sendToServer(responseInput) {
+
+    console.log(responseInput.credential);
+
+//    readData('/readData/test', responseInput.credential);
+
+    $.ajax({
+            // [요청 시작 부분]
+            url: 'http://localhost:8080/oauth/login/google',
+            data : JSON.stringify(responseInput), //json 데이터
+            type: "POST", // 전송 타입
+            async: true, // 비동기 여부
+            timeout: 5000, // 타임 아웃 설정
+            dataType: "JSON", // 응답받을 데이터 타입 (XML,JSON,TEXT,HTML)
+            withCredentials: true,
+            contentType: "application/json; charset=utf-8", //헤더의 Content-Type을 설정
+            beforeSend : function(xhr){ // 다중 헤더 추가 실시
+                xhr.setRequestHeader("Accept", "application/json; charset=utf-8"); //헤더의 Content-Type을 설정
+                xhr.setRequestHeader('Referrer-Policy', 'no-referrer-when-downgrade');
+            },
+
+            // [응답 확인 부분]
+            success: function(response) {
+                console.log("");
+                console.log("[requestPostBodyJson] : [response] : " + JSON.stringify(response));
+                console.log("");
+            },
+
+            // [에러 확인 부분]
+            error: function(xhr) {
+                console.log("");
+                console.log("[requestPostBodyJson] : [error] : " + xhr);
+                console.log("");
+            },
+
+            // [완료 확인 부분]
+            complete:function(data,textStatus) {
+                console.log("");
+                console.log("[requestPostBodyJson] : [complete] : " + textStatus);
+                console.log("");
+            }
+        });
+
+// try {
+//    const response = fetch('http://localhost:8080/login/oauth2/code/google', {
+//      method: 'POST',
+//      credentials: 'include', // include, *same-origin, omit
+//      headers: {
+//        Accept: 'application/json',
+//        'Content-Type': 'application/json',
+//        'Referrer-Policy': 'no-referrer-when-downgrade'
+//      },
+//      body: JSON.stringify(responseInput.credential), // body의 데이터 유형은 반드시 "Content-Type" 헤더와 일치해야 함
+//    });
+//    if (!response.ok) throw new Error('bad server condition');
+//    return true;
+//  } catch (e) {
+//    console.error('postLoginToken Error: ', e.message);
+//    return false;
+//  }
+
+
+}
+
+
 
 
   // If there's an access token, try an API request.
@@ -83,7 +188,8 @@
                   'redirect_uri': redirectUri,
                   'include_granted_scopes': 'true',
                   'scope': 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
-                  'response_type': 'token',
+                  'response_type': 'code',
+                  'access_type': 'offline',
                   'state': 'state_parameter_passthrough_value'};
 
     // Add form parameters as hidden input values.

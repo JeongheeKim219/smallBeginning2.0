@@ -1,5 +1,19 @@
-function readData(data){
-    alert(data);
+function readData(url, data){
+      $.ajax({
+             url : url,
+             type : "post",
+             contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+             dataType : "text",
+             data : {
+                    "data" : data
+                    },
+             success : function(result){
+                 console.log(result);
+             },
+             error : function(err){
+                 console.log(err+"에러발생");
+             }
+      });
 }
 
 function readForm(formId, url, callback, flag){

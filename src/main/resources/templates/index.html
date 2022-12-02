@@ -5,7 +5,6 @@
 <title>Small Begin</title>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 <link th:href="@{/css/common.css}" rel="stylesheet" />
 <link th:href="@{/css/navbar.css}" rel="stylesheet" />
 <link th:href="@{/css/calendar3.css}" rel="stylesheet" />
@@ -16,6 +15,7 @@
 <!--<script th:src="@{/js/todoCRUD.js}"></script>-->
 <!--<script th:src="@{/js/common.js}"></script>-->
 <script th:src="@{/js/login.js}"></script>
+<script th:src="@{/js/common.js}"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 
@@ -153,6 +153,7 @@ $(function(){
     $("#login").on("click", function(){
         trySampleRequest();
     });
+
 
     $("#logout").on("click", function(){
         window.location.href = "/logout";
