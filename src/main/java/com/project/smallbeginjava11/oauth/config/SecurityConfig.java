@@ -6,6 +6,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -24,35 +26,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.cors();
-//        http.csrf().disable();
-//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-//        http.authorizeRequests()
-//                .antMatchers("/login/oauth2/**/**").permitAll()
-//                .anyRequest().authenticated();
-//
-//
-////        http.
-////            csrf()
-////            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-////            .ignoringAntMatchers("/login/oauth2/code/google");
-////
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
         http
-        .csrf().disable()
-        .headers().frameOptions().disable()
-        .and()
-        .authorizeRequests()
-        .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile").permitAll()
-////        .antMatchers("/api/v1/**").hasRole(Role.MEMBER.name())
-        .antMatchers("/oauth/login/google").permitAll()
-        .anyRequest().authenticated()
-        .and()
-        .logout()
-        .logoutSuccessUrl("/")
-        .and()
-        .oauth2Login()
-        .userInfoEndpoint()
-        .userService(oAuthService);
+            .csrf().disable()
+            .headers().frameOptions().disable()
+            .and()
+            .authorizeRequests()
+            .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile").permitAll()
+        ////        .antMatchers("/api/v1/**").hasRole(Role.MEMBER.name())
+            .antMatchers("/oauth/login/google").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .logout()
+            .logoutSuccessUrl("/")
+            .and()
+            .oauth2Login()
+            .userInfoEndpoint()
+            .userService(oAuthService);
     }
 }

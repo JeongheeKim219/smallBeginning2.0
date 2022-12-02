@@ -23,14 +23,17 @@
 <body>
 <div th:fragment = "sideMenuFragment">
     <div class="content-left">
+        <div id="logout" th:text="'logout'"></div>
+        <div id="login" th:text="'login'"></div>
         <div class="main-wrap">
             <span id="main-day" class="main-day"></span>
             <span id="main-year" class="main-day"></span>
-            <span id="main-month" class="main-month"></span> &nbsp;
-            <span id="main-date" class="main-date"></span> &nbsp;
+            <span id="main-month" class="main-month"></span>
+            <span id="main-date" class="main-date"></span>
         </div>
         <div class="todo-wrap">
             <div class="todo-title">You can add "todo list" here</div>
+            <td th:if="${member!= null}" th:text="${member.nickname}"/>
             <div class="input-wrap">
                 <form method="post" id="toDoList">
                     <input type="text" placeholder="please write here" id="toDoContent" class="input-box" name="toDoContent">

@@ -11,11 +11,9 @@ import lombok.*;
 @Builder
 public class MemberDto extends BaseTimeEntity {
 
-
+    private String memberId;
     private String email;
-
     private String nickname;
-
     private String role;
 
 

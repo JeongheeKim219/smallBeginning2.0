@@ -18,8 +18,9 @@ public class Todo extends BaseTimeEntity {
     @SequenceGenerator(sequenceName = "TODO_ID_SEQ", name = "TODO_SEQ_GNR", allocationSize = 1, initialValue = 1)
     private Long todoId;
 
-//    @Column(nullable = false)
-//    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Column(nullable = false)
     private String todoContent;

@@ -5,6 +5,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,6 +27,9 @@ public class Member extends BaseTimeEntity implements Serializable {
     @Column
     private String nickname;
 
+    @OneToMany(mappedBy = "member")
+    private List<Todo> TodoList;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
@@ -38,7 +42,6 @@ public class Member extends BaseTimeEntity implements Serializable {
         this.email = email;
         this.nickname = nickname;
     }
-
 
     public Member update(String nickname) {
         this.nickname = nickname;
