@@ -29,11 +29,12 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-log4j2'   // log4j2
+//    implementation 'org.springframework.boot:spring-boot-starter-log4j2'   // log4j2
     implementation 'org.springframework.boot:spring-boot-starter-jdbc' //jdbc
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa' //jpa
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // thymeleaf
     implementation 'com.h2database:h2' //jpa
+//    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
     implementation ('com.oracle.ojdbc:ojdbc8:19.3.0.0'){ //oracle
         exclude group: 'com.oracle.ojdbc', module: 'simplefan'
         exclude group: 'com.oracle.ojdbc', module: 'ons'
@@ -49,9 +50,16 @@ dependencies {
     implementation 'com.oracle.database.security:osdt_core'
     implementation 'com.oracle.database.security:osdt_cert'
     compileOnly 'org.projectlombok:lombok'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
+    implementation 'com.google.api-client:google-api-client:1.30.10'
     runtimeOnly 'com.oracle.database.jdbc:ojdbc8:21.3.0.0'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.7'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+
+
 }
 
 test {

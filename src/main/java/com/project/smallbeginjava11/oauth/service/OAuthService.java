@@ -1,119 +1,81 @@
-//package com.project.smallbeginjava11.oauth.service;
-//
-//import java.io.BufferedReader;
-//import java.io.IOException;
-//import java.io.InputStreamReader;
-//import java.net.HttpURLConnection;
-//import java.net.URL;
-//import java.util.Date;
-//import java.util.HashMap;
-//
-//
-//import com.google.gson.JsonObject;
-//import com.google.gson.JsonParser;
-//import com.google.gson.JsonElement;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.HttpMethod;
-//import org.springframework.stereotype.Service;
-//import org.springframework.web.client.RestTemplate;
-//import org.springframework.web.util.UriComponentsBuilder;
-//
-//import com.example.mwcbackend.oauth.AuthToken;
-//import com.example.mwcbackend.oauth.AuthTokenProvider;
-//import com.example.mwcbackend.oauth.OAuthToken;
-//import com.example.mwcbackend.oauth.property.KakaoOAuthProviderProperties;
-//import com.example.mwcbackend.oauth.property.KakaoOAuthRegistrationProperties;
-//import com.example.mwcbackend.service.UserService;
-//
-//@Service
-//public class OAuthService {
-//
-//	@Autowired
-//	private MemberService memberService;
-//
-//	@Autowired
-//	private KakaoOAuthRegistrationProperties kakaoOAuthRegistrationProperties;
-//
-//	@Autowired
-//	private KakaoOAuthProviderProperties kakaoOAuthProviderProperties;
-//
-//	@Autowired
-//	private RestTemplate restTemplate;
-//
-//	@Autowired
-//	private AuthTokenProvider authTokenProvider;
-//
-//	public String getKakaoAccessToken(String code) {
-//		final String tokenUri = UriComponentsBuilder.fromHttpUrl(kakaoOAuthProviderProperties.getTokenUri())
-//			.queryParam("grant_type", "authorization_code")
-//			.queryParam("client_id", kakaoOAuthRegistrationProperties.getClientId())
-//			.queryParam("redirect_uri", kakaoOAuthRegistrationProperties.getRedirectUri())
-//			.queryParam("code", code)
-//			.build()
-//			.toString();
-//
-//		final OAuthToken oAuthToken = restTemplate.exchange(tokenUri, HttpMethod.POST, null, OAuthToken.class).getBody();
-//		if (oAuthToken == null) return "";
-//
-//		return oAuthToken.getAccessToken();
-//	}
-//
-//	public AuthToken getKakaoUserInfo(String access_Token) throws IOException {
-//
-//		//    요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
-//		HashMap<String, Object> userInfo = new HashMap<>();
-//		String reqURL = "https://kapi.kakao.com/v2/user/me";
-//
-//		URL url = new URL(reqURL);
-//		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//		conn.setRequestMethod("POST");
-//
-//		//    요청에 필요한 Header에 포함될 내용
-//		conn.setRequestProperty("Authorization", "Bearer " + access_Token);
-//
-//		int responseCode = conn.getResponseCode();
-//		System.out.println("responseCode : " + responseCode);
-//
-//		BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//
-//		String line = "";
-//		String result = "";
-//
-//		while ((line = br.readLine()) != null) {
-//			result += line;
-//		}
-//		System.out.println("response body : " + result);
-//
-//		JsonParser parser = new JsonParser();
-//		JsonElement element = parser.parse(result);
-//
-//		JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
-//		JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
-//
-//		Integer socialId = element.getAsJsonObject().get("id").getAsInt();
-//		String email = kakao_account.getAsJsonObject().get("email").getAsString();
-//		String picture = null;
-//		if (properties.getAsJsonObject().get("profile_image") != null){
-//			picture = properties.getAsJsonObject().get("profile_image").getAsString();
-//		}
-//
-//
-//		User user = userService.findByEmail(email).orElse(null);
-//
-//		// 가입인지, 업데이트인지
-//		if (user == null) {
-//			user = new User(null, socialId.longValue(),email,null,picture,null, null, Role.USER);
-//			userService.create(user);
-//		}
-//
-//		long expiredTime = 1000 * 60L * 60L * 2L; // 토큰 유효 시간 (2시간)
-//
-//		Date ext = new Date(); // 토큰 만료 시간
-//		ext.setTime(ext.getTime() + expiredTime);
-//
-//		return new AuthTokenProvider(JwtConfig.getJwtSecret()).createToken(email, user.getRole().getKey(), ext);
-//	}
-//
-//
-//
-//}
+package com.project.smallbeginjava11.oauth.service;
+
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.project.smallbeginjava11.entity.Member;
+import com.project.smallbeginjava11.entity.Role;
+import com.project.smallbeginjava11.oauth.config.JWTUtils;
+import com.project.smallbeginjava11.oauth.dto.IdTokenRequestDto;
+import com.project.smallbeginjava11.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.Collections;
+
+@Service
+public class MemberService {
+
+    private final MemberRepository memberRepository;
+    private final JWTUtils jwtUtils;
+    private final GoogleIdTokenVerifier verifier;
+
+    public MemberService(@Value("${app.googleClientId}") String clientId, MemberRepository memberRepository,
+                          JWTUtils jwtUtils) {
+        this.memberRepository = memberRepository;
+        this.jwtUtils = jwtUtils;
+        NetHttpTransport transport = new NetHttpTransport();
+        JsonFactory jsonFactory = new JacksonFactory();
+        verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+                .setAudience(Collections.singletonList(clientId))
+                .build();
+    }
+
+    public Member getMember(Long id) {
+        return memberRepository.findById(id).orElse(null);
+    }
+
+    public String loginOAuthGoogle(IdTokenRequestDto requestBody) {
+        Member member = verifyIDToken(requestBody.getIdToken());
+        if (member == null) {
+            throw new IllegalArgumentException();
+        }
+        member = createOrUpdateUser(member);
+        return jwtUtils.createToken(member, false);
+    }
+
+    @Transactional
+    public Member createOrUpdateUser(Member member) {
+        Member existingMember = memberRepository.findByEmail(member.getEmail()).orElse(null);
+        if (existingMember == null) {
+            member.setRole(Role.MEMBER);
+            memberRepository.save(member);
+            return member;
+        }
+        existingMember.setNickname(member.getNickname());
+        existingMember.setEmail(member.getEmail());
+        memberRepository.save(existingMember);
+        return existingMember;
+    }
+
+    private Member verifyIDToken(String idToken) {
+        try {
+            GoogleIdToken idTokenObj = verifier.verify(idToken);
+            if (idTokenObj == null) {
+                return null;
+            }
+            GoogleIdToken.Payload payload = idTokenObj.getPayload();
+            String email = payload.getEmail();
+            String nickname = (String) payload.get("name");
+
+            return new Member(email, nickname);
+        } catch (GeneralSecurityException | IOException e) {
+            return null;
+        }
+    }
+}
