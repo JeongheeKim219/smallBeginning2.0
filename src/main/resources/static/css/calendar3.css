@@ -61,7 +61,7 @@ input#editColor {
     padding: 0 12px;
 }
 
-table#toDoListsTable {
+table#todoListsTable {
     width: 280px;
 }
 
@@ -254,7 +254,7 @@ td.content {
     color: #000000;
     font-weight: bold;
 }
-input#toDoColor {
+input#todoColor {
     border: none;
     background: white;
     margin-right: 80px;

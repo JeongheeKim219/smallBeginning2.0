@@ -91,8 +91,6 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         ResponseEntity<GoogleOAuthTokenDto> restResponse = restTemplate.postForEntity(uri, restRequest, GoogleOAuthTokenDto.class);
         GoogleOAuthTokenDto tokenDto = restResponse.getBody();
 
-        System.out.println(tokenDto.toString());
-
         return tokenDto;
     }
 

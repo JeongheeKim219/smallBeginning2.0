@@ -18,7 +18,6 @@ public class IndexController {
 
     @RequestMapping("/index")
     public String Index(@RequestParam @Nullable Map<String, String> param){
-        System.out.println("또 와이라노...");
         return "index";
     }
     //
@@ -40,20 +39,20 @@ public class IndexController {
 //    }
 //
 //    @Transactional
-//    @RequestMapping(value="/toDoListInsert", produces="text/html;charset=UTF-8")
+//    @RequestMapping(value="/todoListInsert", produces="text/html;charset=UTF-8")
 //    @ResponseBody
 //    @PostMapping
-//    public String toDoListInsert(@RequestParam Map<String, Object> params) throws ParseException {
+//    public String todoListInsert(@RequestParam Map<String, Object> params) throws ParseException {
 //        calendarService.inputTodoList(params);
 //        return "success";
 //    }
 //
 //    @Transactional
-//    @RequestMapping(value="/toDoDelete", produces="text/html;charset=UTF-8")
+//    @RequestMapping(value="/todoDelete", produces="text/html;charset=UTF-8")
 //    @ResponseBody
 //    @PostMapping
-//    public String toDoDelete(@RequestParam Map<String, String> params) throws ParseException {
-//        calendarService.toDoDelete(params);
+//    public String todoDelete(@RequestParam Map<String, String> params) throws ParseException {
+//        calendarService.todoDelete(params);
 //        return "success";
 //    }
 //
@@ -66,11 +65,11 @@ public class IndexController {
 //        return "success";
 //    }
 //
-//    @RequestMapping(value="/updateToDoState")
+//    @RequestMapping(value="/updateTodoState")
 //    @ResponseBody
 //    @PostMapping
-//    public String updateToDoState(@RequestParam Map<String, Object> params) throws ParseException{
-//        String toDoState = String.valueOf(calendarService.updateToDoState(params));
-//        return toDoState;
+//    public String updateTodoState(@RequestParam Map<String, Object> params) throws ParseException{
+//        String todoState = String.valueOf(calendarService.updateTodoState(params));
+//        return todoState;
 //    }
 }

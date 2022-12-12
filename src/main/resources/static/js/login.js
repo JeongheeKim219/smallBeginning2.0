@@ -20,7 +20,7 @@
 
 
  function handleCredentialResponse(response) {
-//   console.log("Encoded JWT ID token: " + response.credential);
+//   ("Encoded JWT ID token: " + response.credential);
     console.log(response);
     $.ajax({
                 // [요청 시작 부분]
@@ -60,22 +60,6 @@
                 }
             });
 }
-
-/**
-* Button Rendering
-**/
- window.onload = function () {
-   google.accounts.id.initialize({
-     client_id: clientId,
-     callback: handleCredentialResponse
-   });
-   google.accounts.id.renderButton(
-     document.getElementById("buttonDiv"),
-     { theme: "outline", size: "large" }  // customization attributes
-   );
-   google.accounts.id.prompt(); // also display the One Tap dialog
- }
-
 
 /**
 * response

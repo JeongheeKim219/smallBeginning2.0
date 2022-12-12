@@ -47,7 +47,6 @@ function readToDoForm(formId, url){
              dataType : "text",
              data : $(formId).serialize(),
              success : function(result){
-                 readToDo();
                  readToDoInMonth();
              },
              error : function(err){
@@ -74,17 +73,18 @@ function sendDateList(startDate, endDate, dateList, url){
 
 };
 
-function checkToDo(trId, toDoState){
-        var toDoCode = trId.slice(-2);
+function checkToDo(trId, todoState){
+        var todoId = trId.slice(-2);
+        console.log(todoId)
 
         $.ajax({
-            url : '/updateToDoState',
+            url : '/updateTodoState',
             type : "post",
             contentType: 'application/x-www-form-urlencoded; charset=utf-8',
             dataType : "text",
             data : {
-                "toDoCode" : toDoCode,
-                "toDoState" : toDoState
+                "todoId" : todoId,
+                "todoState" : todoState
             },
             success : function(result){
                 checkToDoInTable(trId, result);
@@ -96,24 +96,21 @@ function checkToDo(trId, toDoState){
         });
 }
 
-function readToDo(clickedDate){
-//    var UserCode = getSession();
+function readToDoOnDate(clickedDate){
     if (!clickedDate) clickedDate = getDate4Ajax($(".active").attr("id"));
 
      $.ajax({
-             url : "/readToDoList",
+             url : "/readToDoListOnDate",
              type : "post",
              contentType: 'application/x-www-form-urlencoded; charset=utf-8',
              dataType : "text",
              data : {"selectedDate" : clickedDate,
-//                     "UserCode" : UserCode
              },
              success : function(result){
                  //기존 테이블 삭제
                  removeTodoTable();
-
                  // 새로 변경된 테이블 생성 뒤 로드
-                 addTodo(result);
+                 addTodoListTable(result);
              },
              error : function(err){
                  console.log(err+"에러발생");
@@ -122,19 +119,24 @@ function readToDo(clickedDate){
 }
 
 function readToDoInMonth(selectedDate){
-    if (!selectedDate) selectedDate = getDate4Ajax($(".active").attr("id"));
-//    var UserCode = getSession();
+//    if (!selectedDate) selectedDate = getDate4Ajax($(".active").attr("id"));
+    if (!selectedDate) selectedDate = dateToString(new Date());
     var selectedMonth = selectedDate.slice(0, 7);
+    var pointDate = new Date(selectedDate);
+    var lastDayOfMonth = dateToString(getLastDayOfMonth(pointDate));
+    var firstDayOfMonth = selectedMonth + "-01";
 
     $.ajax({
         url : "/readToDoInMonth",
         type : "post",
         contentType: 'application/x-www-form-urlencoded; charset=utf-8',
         dataType : "JSON",
-        data : {"selectedMonth" : selectedMonth,
-//                "UserCode" : UserCode
+        data : {
+                "firstDayOfMonth" : firstDayOfMonth,
+                "lastDayOfMonth" : lastDayOfMonth
         },
         success : function(result){
+            console.log(result)
             addTodoOnCalendar(result);
         },
         error : function(err){
@@ -143,15 +145,17 @@ function readToDoInMonth(selectedDate){
     });
 }
 
-function deleteTodo(deleteid, selectedDate){
+function deleteTodo(todoId, selectedDate){
       $.ajax({
-             url : "/toDoDelete",
+             url : "/deleteTodo",
              type : "post",
              contentType: 'application/x-www-form-urlencoded; charset=utf-8',
              dataType : "text",
-             data : {"toDoCode" : deleteid},
+             data : {
+                "todoId": todoId
+             },
              success : function(result){
-                 readToDo(selectedDate);
+                 readToDoInMonth(selectedDate);
              },
              error : function(err){
                  console.log(err+"error");

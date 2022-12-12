@@ -53,38 +53,38 @@
 <!--            VALUES(-->
 <!--                (select IFNULL(MAX(a.to_do_code), 0) + 1 FROM to_do a),-->
 <!--                #{UserCode},-->
-<!--                #{toDoContent},-->
-<!--                #{planDate},-->
+<!--                #{todoContent},-->
+<!--                #{plannedTo},-->
 <!--                0,-->
-<!--                #{toDoColor},-->
+<!--                #{todoColor},-->
 <!--                #{done_date}-->
 <!--                )-->
 <!--    </insert>-->
 
-<!--    <update id="updateToDoState" parameterType="hashMap">-->
+<!--    <update id="updateTodoState" parameterType="hashMap">-->
 <!--        UPDATE-->
 <!--            to_do-->
 <!--        SET-->
-<!--            to_do_state = #{toDoState}-->
+<!--            to_do_state = #{todoState}-->
 <!--        WHERE-->
-<!--            to_do_code = #{toDoCode};-->
+<!--            to_do_code = #{todoId};-->
 <!--    </update>-->
 
-<!--    <delete id="toDoDelete" parameterType="hashMap">-->
+<!--    <delete id="todoDelete" parameterType="hashMap">-->
 <!--        DELETE-->
 <!--            FROM-->
 <!--                to_do-->
 <!--        WHERE-->
-<!--            to_do_code = #{toDoCode};-->
+<!--            to_do_code = #{todoId};-->
 <!--    </delete>-->
 
 <!--    <update id="editToDo" parameterType="hashMap">-->
 <!--        UPDATE-->
 <!--            to_do-->
 <!--        SET-->
-<!--            to_do_content = #{toDoContent},-->
-<!--            to_do_color = #{toDoColor}-->
+<!--            to_do_content = #{todoContent},-->
+<!--            to_do_color = #{todoColor}-->
 <!--        WHERE-->
-<!--            to_do_code = #{toDoCode};-->
+<!--            to_do_code = #{todoId};-->
 <!--    </update>-->
 <!--</mapper>-->

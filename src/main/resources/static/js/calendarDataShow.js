@@ -30,22 +30,22 @@ function addTodoOnCalendar(result){
     for (var i = 0; i < result.length; i++){
         var $div = document.createElement('div');
         $div.className = 'td-item';
-        $div.setAttribute('id', 'td-div-' + result[i].toDoCode);
+        $div.setAttribute('id', 'td-div-' + result[i].todoId);
         // DB의 to_do_content 데이터를 trim, 공백삭제
         var checker = document.createElement('span');
-        checker.setAttribute('id', 'td-ck-' + result[i].toDoCode);
+        checker.setAttribute('id', 'td-ck-' + result[i].todoId);
         checker.className = 'checker';
         checker.textContent = "█";
-        checker.style.color = result[i].toDoColor;
+        checker.style.color = result[i].todoColor;
         $div.appendChild(checker);
 
         var content = document.createElement('span');
-        content.setAttribute('id', 'td-ct-' + result[i].toDoCode);
+        content.setAttribute('id', 'td-ct-' + result[i].todoId);
         content.className = 'content'
-        content.textContent = result[i].toDoContent.replaceAll(" ", "").trim();
+        content.textContent = result[i].todoContent.replaceAll(" ", "").trim();
 
         // state에 따라 다른 css 적용, 이미 완료 상태라면 check 표시
-        if (result[i].toDoState == 1) {
+        if (result[i].todoState == 1) {
             content.style.textDecoration = 'line-through';
             content.style.color = '#DADADA';
             $div.style.color = '#DADADA';
@@ -53,7 +53,7 @@ function addTodoOnCalendar(result){
 
         $div.appendChild(content);
 
-        var tdId = "#" + setDateId(result[i].planDate);
+        var tdId = "#" + setDateId(result[i].plannedTo);
         $(tdId).append($div);
     }
 

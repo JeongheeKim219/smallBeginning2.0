@@ -30,20 +30,17 @@ function removeCalendar(){
     removeAllChildElements(calendarBody);
 }
 
-
 function attachMain(mainThisMonth){
     if (!mainThisMonth) mainThisMonth = new Date();
     var tbodyFList = document.createDocumentFragment();
     var tbodyMainMonth = showCalendar(mainThisMonth, 100);
-    var tbodyNextFirstWeek = showCalendar(next(mainThisMonth), 200).firstChild;
 
     tbodyFList.append(tbodyMainMonth);
-    tbodyFList.append(tbodyNextFirstWeek);
-    let length = tbodyFList.childElementCount;
+//    let length = tbodyFList.childElementCount;
+//    for (let i = 0; i < length; i++) {
+//        tbodyFList.children[i].setAttribute('data-main-month-block', 0);
+//    }
 
-    for (let i = 0; i < length; i++) {
-        tbodyFList.children[i].setAttribute('data-main-month-block', 0);
-    }
     document.getElementById("calendar-body").append(tbodyFList);
     return next(mainThisMonth)
 }
@@ -94,50 +91,61 @@ function showCurrentMonthTitle(pointDate){
 function showCalendar(pointDate, monthCnt){
     var tbodyFList = document.createDocumentFragment();
     if (!pointDate) pointDate = new Date();
-    var pointFirst = new Date(pointDate.getFullYear(), pointDate.getMonth(),1);
+    var pointFirst = new Date(pointDate.getFullYear(), pointDate.getMonth(), 1);
     var pointPageYear = getPageYear(pointDate);
     var pointFirstWeekStartDay = pointFirst.getDay();
 
     var prevFirst = prev(pointDate);
+    var nextFirst = next(pointDate);
     var prevPageYear = getPageYear(prevFirst);
     var prevLastDate = prevPageYear[prevFirst.getMonth()];
     var prevLastWeekStartDate = prevLastDate - pointFirstWeekStartDay + 1;
 
     let pointId = parseInt(setDateId(pointDate, 1));
     let prevId = parseInt(setDateId(prevFirst, prevLastWeekStartDate));
-    let cnt = 1;
+    let nextId = parseInt(setDateId(nextFirst, 1));
+    let prevCnt = 1;
+    let mainCnt = 1;
+    let nextCnt = 1;
     for(let i = 1; i < 7; i++){ //주에 대한 for문
         var $tr = document.createElement('tr');
         $tr.setAttribute('id', monthCnt + i);
         for(let j = 0; j < 7; j++){
+            var $td = document.createElement('td');
+            var $div = document.createElement('div');
+            $div.className = 'td-date';
             if(i === 1 && j < pointFirstWeekStartDay){
-                var $td = document.createElement('td');
-                var $div = document.createElement('div');
-                $div.className = 'td-date';
-                $div.textContent = prevLastWeekStartDate;;
+                $div.textContent = prevLastWeekStartDate;
                 $td.appendChild($div);
                 $td.setAttribute('id', prevId);
                 $td.setAttribute('class', 'prev-calendar');
+                // 달의 첫 날과 마지막 날 구분용 class
                 if (prevLastWeekStartDate == prevLastDate) $td.classList.add('month-end-date');
                 $tr.appendChild($td);
                 prevLastWeekStartDate++;
+                prevCnt++;
                 prevId++;
+            } else if(mainCnt > pointPageYear[pointFirst.getMonth()]) {
+                $div.textContent = nextCnt;
+                $td.appendChild($div);
+                $td.setAttribute('id', nextId);
+                $td.setAttribute('class', 'next-calendar');
+                $tr.appendChild($td);
+                nextCnt++;
+                nextId++;
             } else{
-                var $td = document.createElement('td');
-                var $div = document.createElement('div');
-                $div.className = 'td-date';
-                $div.textContent = cnt;
+                $div.textContent = mainCnt;
                 $td.appendChild($div);
                 $td.setAttribute('id', pointId);
                 $td.setAttribute('class', 'main-calendar');
                 // 달의 첫 날과 마지막 날 구분용 class
-                if (cnt == 1) $td.classList.add('month-start-date');
+                if (mainCnt == 1) $td.classList.add('month-start-date');
                 $tr.appendChild($td);
-                cnt++;
+                mainCnt++;
                 pointId++;
             }
         }
-        if (cnt > pointPageYear[pointFirst.getMonth()]) break;
+        if (nextCnt > 7) break;
         tbodyFList.appendChild($tr);
     }
     showCurrentMonthTitle(new Date());
@@ -151,7 +159,6 @@ function getDateForLeft(pointDate){
     var monthStr = pointDate.toLocaleString("en-US", {month : "short"});
     var dateStr = pointDate.getDate().toString();
     var dayStr = pointDate.toLocaleString("en-US", {weekday : "long"});
-
 
     mainDateForLeft.push(yearStr);
     monthStr = monthStr.length < 2? "0" + monthStr : monthStr;
@@ -185,7 +192,7 @@ function showCurrentDateOnLeft(pointDate){
 function inputPlanDate(pointDate){
     if(!pointDate) pointDate = new Date();
     var dateStr = getDate4Ajax(setDateId(pointDate));
-    $("#planDate").val(dateStr);
+    $("#plannedTo").val(dateStr);
 }
 
 function prev(pointDate){
@@ -254,6 +261,31 @@ function showMain(){
     return returnDate;
 }
 
+function dateToString(date) {
+
+    let returndate;
+
+    if(date.getMonth()+1 < 10){
+        returnDate = date.getFullYear() + "-0" + (date.getMonth()+1);
+    }else{
+        returnDate = date.getFullYear() + "-" + (date.getMonth()+1);
+    }
+    if(date.getDate() < 10){
+        returnDate += "-0" + date.getDate();
+    }else{
+        returnDate += "-" + date.getDate();
+    }
+
+    return returnDate;
+}
+
+function getLastDayOfMonth(today){
+    var pageYearList = getPageYear(today);
+    var lastDayOfMonth = pageYearList[today.getMonth()];
+    today.setDate(lastDayOfMonth);
+    return today;
+}
+
 function getDateFromId(idStr){
     if(idStr != ""){
         dateStr = "";
@@ -266,44 +298,12 @@ function getDateFromId(idStr){
     }
 }
 
-function checkToDoInTable(trId, result) {
-    var selectorStr = "#" + trId + " .state";
-    $(selectorStr).text(result);
-}
-
-function checkToDoInTable(trId, result) {
-    var selectorStr = "#" + trId + " .state";
-    $(selectorStr).text(result);
-}
-
-// TODO: dataType => JSON(Done)
-var readToDoInMonth = function readToDoInMonth(selectedDate){
-    if (!selectedDate) selectedDate = getDate4Ajax($(".active").attr("id"));
-    var selectedMonth = selectedDate.slice(0, 7);
-    var UserCode = getSession();
-
-    $.ajax({
-        url : "/readToDoInMonth",
-        type : "post",
-        contentType: 'application/x-www-form-urlencoded; charset=utf-8',
-        dataType : "JSON",
-        data : {"selectedMonth" : selectedMonth,
-                "UserCode" : UserCode
-        },
-        success : function(result){
-            addTodoOnCalendar(result);
-        },
-        error : function(err){
-            console.log(err+"에러발생");
-        }
-    });
-}
 
 function editTodo(result){
     var resultTodo = JSON.parse(result);
 
     if(resultTodo.length > 0){
-        var table4Todo = document.getElementById("toDoListsTable");
+        var table4Todo = document.getElementById("todoListsTable");
 
         for(var obj of resultTodo){
             var values = Object.values(obj);
@@ -344,7 +344,6 @@ function removeAllChildElements(parentElement){
     }
 }
 
-
 function clickDate(pointDate){
     // 캘린더 화면에 접속하면 자동으로 해당일의 날짜가 클릭되어 활성화 상태가 된다.
     if (!pointDate) pointDate = new Date();
@@ -354,7 +353,7 @@ function clickDate(pointDate){
 
     // 여기에 첫화면에 대한 to_do 서치하는 함수 넣기 parameter = getDateFromId(clickedDate)
     var param4readToDo = getDate4Ajax(clickedDate);
-    readToDo(param4readToDo);
+    readToDoInMonth(param4readToDo);
 
     var tdList = $("#calendar-body td");
     for (td of tdList){
@@ -381,7 +380,7 @@ function clickDate(pointDate){
             clickedDateElement.classList.add('active');
             showCurrentDateOnLeft(getDateFromId(clickedDate));
             inputPlanDate(getDateFromId(clickedDate));
-            readToDo(getDate4Ajax(clickedDate));
+            readToDoInMonth(getDate4Ajax(clickedDate));
         }
     }
     return getDateFromId(clickedDate);
@@ -393,9 +392,8 @@ function loadCalendar(pointDate){
     } else {
         var clickedDate = setDateId(pointDate);
     }
-    readToDo(getDate4Ajax(clickedDate));
     readToDoInMonth(getDate4Ajax(clickedDate));
-
+    readToDoOnDate(getDate4Ajax(clickedDate));
 }
 
 

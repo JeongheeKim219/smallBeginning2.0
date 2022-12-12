@@ -1,11 +1,13 @@
 package com.project.smallbeginjava11.entity;
 
+import com.project.smallbeginjava11.oauth.dto.TodoDto;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -26,7 +28,7 @@ public class Todo extends BaseTimeEntity {
     private String todoContent;
 
     @Column(nullable = false)
-    private Date plannedTo;
+    private LocalDateTime plannedTo;
 
     @Column(nullable = false)
     @ColumnDefault("'0'")
@@ -36,4 +38,31 @@ public class Todo extends BaseTimeEntity {
     @ColumnDefault("'#000000'")
     private String todoColor;
 
+    @Builder
+    public Todo(Member member, Long todoId, String todoContent, LocalDateTime plannedTo, int todoState, String todoColor) {
+        this.member = member;
+        this.todoId = todoId;
+        this.todoContent = todoContent;
+        this.plannedTo = plannedTo;
+        this.todoState = todoState;
+        this.todoColor = todoColor;
+    }
+
+    public Todo(TodoDto todoDto, Member member) {
+        this.member = member;
+        this.todoId = todoDto.getTodoId();
+        this.todoContent = todoDto.getTodoContent();
+        this.plannedTo = todoDto.getPlannedTo();
+        this.todoState = todoDto.getTodoState();
+        this.todoColor = todoDto.getTodoColor();;
+
+    }
+
+    public Todo(TodoDto todoDto) {
+        this.todoId = todoDto.getTodoId();
+        this.todoContent = todoDto.getTodoContent();
+        this.plannedTo = todoDto.getPlannedTo();
+        this.todoState = todoDto.getTodoState();
+        this.todoColor = todoDto.getTodoColor();;
+    }
 }

@@ -2,20 +2,17 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Small Begin</title>
+<title>Small Beginning</title>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link th:href="@{/css/common.css}" rel="stylesheet" />
-<link th:href="@{/css/navbar.css}" rel="stylesheet" />
 <link th:href="@{/css/calendar3.css}" rel="stylesheet" />
 <link th:href="@{/css/resetCSS.css}" rel="stylesheet" />
-<!--<script th:src="@{/js/navbar.js}"></script>-->
-<!--<script th:src="@{/js/calendarDataShow.js}"></script>-->
-<!--<script th:src="@{/js/calendar1.js}"></script>-->
-<!--<script th:src="@{/js/todoCRUD.js}"></script>-->
-<!--<script th:src="@{/js/common.js}"></script>-->
-<script th:src="@{/js/login.js}"></script>
+<script th:src="@{/js/calendarDataShow.js}"></script>
+<script th:src="@{/js/calendar.js}"></script>
+<script th:src="@{/js/todoCRUD.js}"></script>
 <script th:src="@{/js/common.js}"></script>
+<script th:src="@{/js/login.js}"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 
@@ -59,11 +56,11 @@
 <script>
 $(function(){
 
-<!--    attachMain();-->
-<!--    var mainThisMonth = clickDate();-->
-<!--    inputPlanDate();-->
-
-    const baseUrl = "http://localhost:8080";
+<!--    readToDoInMonth();-->
+    attachMain();
+    var mainThisMonth = clickDate();
+    inputPlanDate();
+<!--    readToDoOnDate();-->
 
     $("#prev").click(function(){
         mainThisMonth = prev(mainThisMonth);
@@ -74,7 +71,6 @@ $(function(){
         showCurrentDateOnLeft(mainThisMonth);
         inputPlanDate(mainThisMonth);
         loadCalendar(mainThisMonth);
-
     });
 
     $("#next").click(function(){
@@ -88,23 +84,26 @@ $(function(){
         loadCalendar(mainThisMonth);
     });
 
-    $("#input-data").click(function(){
-        var planDate = $('#planDate').val();
-        var toDoContent = $("#toDoContent").val();
-        if(!toDoContent) {
+
+    $("#input-data").on("click", function(){
+        var plannedTo = $('#plannedTo').val();
+        console.log(plannedTo);
+        var todoContent = $("#todoContent").val();
+        if(!todoContent) {
             alert('내용을 입력해주세요');
         } else{
-            readToDoForm("#toDoList", "/toDoListInsert");
+            readForm("#todoList", "/insertTodoList");
         }
     });
 
     $('#calendar td').click(function(){
         var tdID = $(this).attr('id');
         var param4readToDo = getDate4Ajax(tdID);
-        readToDo(param4readToDo);
+        readToDoOnDate();
+        readToDoInMonth(param4readToDo);
     });
 
-    $('#toDoListsTable').on("click", ".delete", function(){
+    $('#todoListsTable').on("click", ".delete", function(){
         var answer = confirm("삭제하시겠습니까?");
         if(answer){
             var deleteId = $(this).attr('id');
@@ -112,54 +111,51 @@ $(function(){
             var param4deleteTD = getDate4Ajax(selectedDate);
             deleteTodo(deleteId, param4deleteTD);
         }
-
     });
 
-    $('#toDoListsTable').on("click", ".edit", function(){
+    $('#todoListsTable').on("click", ".edit", function(){
+        console.log("click");
         var tr = $(this).attr('class');
         var rowNum = tr.substr(5);
         rowNum++;
-        var tableTr = document.getElementById("toDoListsTable").getElementsByTagName("tr");
+        var tableTr = document.getElementById("todoListsTable").getElementsByTagName("tr");
         var selectedTr = tableTr[rowNum];
-        var colorCol = selectedTr.children[0];
         var contentCol = selectedTr.children[1];
-        var complete = selectedTr.children[4];
+        var complete = selectedTr.children[3];
 
-        colorCol.id = "editColorTd";
         contentCol.id = "editContent";
         complete.id = "complete";
-        colorCol.innerHTML = '<input type="color" id="editColor" name="toDoColor"/>';
         complete.innerText = 'submit';
         contentCol.contentEditable = 'true';
 
         // submit 클릭 시 colorCol, contentCol에서 입력 받은 값을 updateTodo 메소드로 전달
         $("#complete").on("click", function(){
-            var sendColor = $("#editColor").val();
             var sendContent = $("#editContent").text();
             var clickedDate = $(".active").attr("id");
-            var toDoCode = $(this).prev().attr("id");
-            editTodo(sendColor, sendContent, clickedDate, toDoCode);
+            var todoId = $(this).prev().attr("id");
+            editTodo(sendContent, clickedDate, todoId);
             complete.innerText = 'edit';
         });
 
-            //var editId = $(this).attr('id');
-        });
+    });
 
-    $("#toDoListsTable").on("click", ".state", function(){
+    $("#todoListsTable").on("click", ".state", function(){
+        console.log(this.parentNode.id, this.innerText);
         checkToDo(this.parentNode.id, this.innerText);
     });
 
     $("#login").on("click", function(){
-        trySampleRequest();
+        oauth2SignIn();
     });
-
 
     $("#logout").on("click", function(){
-        window.location.href = "/logout";
+        window.location.href = "/oauth/logout";
     });
 
-<!--   loadCalendar();-->
+   loadCalendar();
+
 });
+
 </script>
 </html>
 

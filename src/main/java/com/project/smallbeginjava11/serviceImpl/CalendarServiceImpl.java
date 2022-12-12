@@ -26,8 +26,8 @@
 //    }
 //
 //    @Override
-//    public void toDoDelete(Map<String, String> params) throws ParseException {
-//        calendarMapper.toDoDelete(params);
+//    public void todoDelete(Map<String, String> params) throws ParseException {
+//        calendarMapper.todoDelete(params);
 //    }
 //
 //    @Override
@@ -41,16 +41,16 @@
 //    }
 //
 //    @Override
-//    public String updateToDoState(Map<String, Object> params) throws ParseException {
-//        String toDoState =  params.get("toDoState").toString();
-//        if (toDoState.equals("1")) {
-//            toDoState = "0";
+//    public String updateTodoState(Map<String, Object> params) throws ParseException {
+//        String todoState =  params.get("todoState").toString();
+//        if (todoState.equals("1")) {
+//            todoState = "0";
 //        }else {
-//            toDoState = "1";
+//            todoState = "1";
 //        }
-//        params.put("toDoState", toDoState);
-//        calendarMapper.updateToDoState(params);
-//        return toDoState;
+//        params.put("todoState", todoState);
+//        calendarMapper.updateTodoState(params);
+//        return todoState;
 //    }
 //
 //}

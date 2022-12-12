@@ -17,8 +17,8 @@ import java.util.List;
 public class Member extends BaseTimeEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ_GNR")
-    @SequenceGenerator(sequenceName = "USER_ID_SEQ", name = "USER_SEQ_GNR", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ_GNR")
+    @SequenceGenerator(sequenceName = "MEMBER_ID_SEQ", name = "MEMBER_SEQ_GNR", allocationSize = 1, initialValue = 1)
     private Long memberId;
 
     @Column(nullable = false)

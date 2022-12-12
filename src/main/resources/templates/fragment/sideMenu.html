@@ -9,13 +9,9 @@
 
 <!-- navbar 및 전체 css 관련 !-->
 <link th:href="@{/css/common.css}" rel="stylesheet" />
-<link th:href="@{/css/navbar.css}" rel="stylesheet" />
-<link th:href="@{/css/footer.css}" rel="stylesheet" />
 <link th:href="@{/css/calendar1.css}" rel="stylesheet" />
 <link th:href="@{/css/resetCSS.css}" rel="stylesheet" />
-<script th:src="@{/js/navbar.js}"></script>
 <script th:src="@{/js/calendar1.js}"></script>
-<script th:src="@{/js/infiniteScroll.js}"></script>
 <script th:src="@{/js/common.js}"></script>
 
 </head>
@@ -35,11 +31,10 @@
             <div class="todo-title">You can add "todo list" here</div>
             <td th:if="${member!= null}" th:text="${member.nickname}"/>
             <div class="input-wrap">
-                <form method="post" id="toDoList">
-                    <input type="text" placeholder="please write here" id="toDoContent" class="input-box" name="toDoContent">
-                    <input type="date" id="planDate" class="input-box" name="planDate" />
-                    <input type="color" id="toDoColor" name="toDoColor" value="#16aaad" list="colors4palette" />
-                    <input type="text" id="sessionCode" name="UserCode" th:value="${session.UserCode}" />
+                <form method="post" id="todoList">
+                    <input type="text" placeholder="please write here" id="todoContent" class="input-box" name="todoContent">
+                    <input type="date" id="plannedTo" class="input-box" name="plannedTo" />
+                    <input type="color" id="todoColor" name="todoColor" value="#16aaad" list="colors4palette" />
                     <datalist id="colors4palette">
                         <option>#355070</option>
                         <option>#6D597A</option>
@@ -49,9 +44,9 @@
                     </datalist>
                     <button type="button" id="input-data" class="input-data">INPUT</button>
                 </form>
-                <table id="toDoListsTable">
+                <table id="todoListsTable">
                     <tr>
-                        <td>&nbsp;</td><td>content</td><td>state</td><td>&nbsp;</td><td>&nbsp;</td>
+                        <td>state</td><td>content</td><td></td><td></td>
                     </tr>
                 </table>
             </div>
