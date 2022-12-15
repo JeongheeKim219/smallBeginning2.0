@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Small Beginning</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link th:href="@{/css/common.css}" rel="stylesheet" />
+<link th:href="@{/css/calendar.css}" rel="stylesheet" />
+<link th:href="@{/css/resetCSS.css}" rel="stylesheet" />
+<link th:href="@{/css/calendarLeft.css}" rel="stylesheet" />
+<script>
+    var isAuthenticated = "[[${isAuthenticated}]]";
+</script>
+<script th:src="@{/js/calendar.js}"></script>
+<script th:src="@{/js/todoCalendar.js}"></script>
+<script th:src="@{/js/todoTable.js}"></script>
+<script th:src="@{/js/common.js}"></script>
+<script th:src="@{/js/login.js}"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+<th:block th:replace="fragment/calendarLeft :: sideMenuFragment"></th:block>
+<div id="container">
+    <div class="main">
+        <div class="content-wrap">
+            <div class="content-right">
+                <div id="current-year-month-div">
+                    <table>
+                        <tr class="btn-wrap clearfix">
+                            <td align="center" id="prev" colspan="2">ᐸ</td>
+                            <td align="center" id="current-year-month" colspan="3"></td>
+                            <td align="center" id="next" colspan="2">ᐳ</td>
+                        </tr>
+                        <tr id="day-list">
+                            <td class = "sun" align="center">Sun</td>
+                            <td align="center">Mon</td>
+                            <td align="center">Tue</td>
+                            <td align="center">Wed</td>
+                            <td align="center">Thu</td>
+                            <td align="center">Fri</td>
+                            <td class= "sat" align="center">Sat</td>
+                        </tr>
+                    </table>
+                </div>
+                <table id="calendar" align="center">
+                    <tbody id="calendar-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script type="text/javascript"></script>
+<script>
+$(function(){
+
+    readTodoInMonth();
+    readTodoOnDate();
+
+    attachMain();
+    var mainThisMonth = clickDate();
+    inputPlanDate();
+
+    $("#prev").click(function(){
+        mainThisMonth = prev(mainThisMonth);
+        removeCalendar();
+        attachMain(mainThisMonth);
+        showCurrentMonthTitle(mainThisMonth);
+        clickDate(mainThisMonth);
+        showCurrentDateOnLeft(mainThisMonth);
+        inputPlanDate(mainThisMonth);
+        loadCalendar(mainThisMonth);
+    });
+
+    $("#next").click(function(){
+        mainThisMonth = next(mainThisMonth);
+        removeCalendar();
+        attachMain(mainThisMonth);
+        showCurrentMonthTitle(mainThisMonth);
+        clickDate(mainThisMonth);
+        showCurrentDateOnLeft(mainThisMonth);
+        inputPlanDate(mainThisMonth);
+        loadCalendar(mainThisMonth);
+    });
+
+
+    $("#input-data").on("click", function(){
+        var plannedTo = $('#plannedTo').val();
+        console.log(plannedTo);
+        var todoContent = $("#todoContent").val();
+        if(!isAuthenticated) {
+            alert('로그인해주세요');
+        } else if(!todoContent) {
+            alert('내용을 입력해주세요');
+        } else{
+            readForm("#todoList", "/insertTodoList");
+        }
+    });
+
+    $('#calendar td').click(function(){
+        var tdID = $(this).attr('id');
+        var param4readTodo = getDate4Ajax(tdID);
+        readTodoOnDate();
+        readTodoInMonth(param4readTodo);
+
+    });
+
+    $('#todoListsTable').on("click", ".delete", function(){
+        var answer = confirm("삭제하시겠습니까?");
+        if(answer){
+            var deleteId = $(this).attr('id');
+            var selectedDate = $(".active").attr('id');
+            var param4deleteTD = getDate4Ajax(selectedDate);
+            deleteTodo(deleteId, param4deleteTD);
+        }
+    });
+
+    $('#todoListsTable').on("click", ".edit", function(){
+        console.log("click");
+        var tr = $(this).attr('class');
+        var rowNum = tr.substr(5);
+        rowNum++;
+        var tableTr = document.getElementById("todoListsTable").getElementsByTagName("tr");
+        var selectedTr = tableTr[rowNum];
+        var contentCol = selectedTr.children[1];
+        var complete = selectedTr.children[3];
+
+        contentCol.id = "editContent";
+        complete.id = "complete";
+        complete.innerText = 'submit';
+        contentCol.contentEditable = 'true';
+
+        // submit 클릭 시 colorCol, contentCol에서 입력 받은 값을 updateTodo 메소드로 전달
+        $("#complete").on("click", function(){
+            var sendContent = $("#editContent").text();
+            var clickedDate = $(".active").attr("id");
+            var todoId = $(this).prev().attr("id");
+            editTodo(sendContent, clickedDate, todoId);
+            complete.innerText = 'edit';
+        });
+
+    });
+
+    $("#todoListsTable").on("click", ".state", function(){
+        console.log(this.parentNode.id, this.innerText);
+        checkTodo(this.parentNode.id, this.innerText);
+    });
+
+    $("#login").on("click", function(){
+        oauth2SignIn();
+    });
+
+    $("#logout").on("click", function(){
+        window.location.href = "/logout";
+    });
+
+   loadCalendar();
+});
+
+</script>
+</html>
+
