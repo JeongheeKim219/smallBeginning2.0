@@ -25,7 +25,7 @@ public class TodoController {
 
 
     @Transactional
-    @RequestMapping(value="/readToDoListOnDate")
+    @RequestMapping(value="/readTodoListOnDate")
     public List<TodoDto> readCalendarOnDate(Principal principal, @RequestParam Map<String, String> params) {
         Long memberId = Long.valueOf(principal.getName());
         List<TodoDto> todoList = todoService.getTodoListOnDate(memberId, params);
@@ -33,8 +33,8 @@ public class TodoController {
     }
 
     @Transactional
-    @RequestMapping(value="/readToDoInMonth")
-    public List<TodoDto> readToDoInMonth(Principal principal, @RequestParam Map<String, String> params) {
+    @RequestMapping(value="/readTodoInMonth")
+    public List<TodoDto> readTodoInMonth(Principal principal, @RequestParam Map<String, String> params) {
         Long memberId = Long.valueOf(principal.getName());
         List<TodoDto> todoList = todoService.getTodoListInMonth(memberId, params);
         return todoList;

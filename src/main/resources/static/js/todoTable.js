@@ -1,4 +1,6 @@
 function addTodoListTable(result){
+//    console.log(result);
+//    var resultTodo = result;
     var resultTodo = JSON.parse(result);
     console.log(resultTodo);
 
@@ -64,24 +66,7 @@ function addTodoListTable4edit(result){
     }
 }
 
-function editTodo(sendContent, clickedDate, todoId){
-     $.ajax({
-             url : "/updateTodoContent",
-             type : "post",
-             contentType: 'application/x-www-form-urlencoded; charset=utf-8',
-             dataType : "text",
-             data : {
-                    "todoId" : todoId,
-                    "todoContent" : sendContent},
-             success : function(result){
-                readToDoInMonth(getDate4Ajax(clickedDate));
-                readToDoOnDate(getDate4Ajax(clickedDate));
-             },
-             error : function(err){
-                 console.log(err+"에러발생");
-             }
-      });
-}
+
 
 // 삭제
 function removeTodoTable(){
@@ -106,7 +91,7 @@ function getDate4Ajax(idStr){
     }
 }
 
-function checkToDoInTable(trId, result) {
+function checkTodoInTable(trId, result){
     var selectorStr = "#" + trId + " .state";
     $(selectorStr).text(result);
 }

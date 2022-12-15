@@ -352,8 +352,8 @@ function clickDate(pointDate){
     clickedDateElement.classList.add('active');
 
     // 여기에 첫화면에 대한 to_do 서치하는 함수 넣기 parameter = getDateFromId(clickedDate)
-    var param4readToDo = getDate4Ajax(clickedDate);
-    readToDoInMonth(param4readToDo);
+    var param4readTodo = getDate4Ajax(clickedDate);
+    readTodoInMonth(param4readTodo);
 
     var tdList = $("#calendar-body td");
     for (td of tdList){
@@ -380,7 +380,7 @@ function clickDate(pointDate){
             clickedDateElement.classList.add('active');
             showCurrentDateOnLeft(getDateFromId(clickedDate));
             inputPlanDate(getDateFromId(clickedDate));
-            readToDoInMonth(getDate4Ajax(clickedDate));
+            readTodoInMonth(getDate4Ajax(clickedDate));
         }
     }
     return getDateFromId(clickedDate);
@@ -392,8 +392,8 @@ function loadCalendar(pointDate){
     } else {
         var clickedDate = setDateId(pointDate);
     }
-    readToDoInMonth(getDate4Ajax(clickedDate));
-    readToDoOnDate(getDate4Ajax(clickedDate));
+    readTodoInMonth(getDate4Ajax(clickedDate));
+    readTodoOnDate(getDate4Ajax(clickedDate));
 }
 
 

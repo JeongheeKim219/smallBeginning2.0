@@ -32,8 +32,6 @@ public class JWTRequestFilter extends OncePerRequestFilter {
         Authentication authentication;
         if (authCookie != null && (authentication = jwtUtils.verifyAndGetAuthentication(authCookie.getValue())) != null) {
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            System.out.println("-----------------------------------");
-            System.out.println(authCookie.getValue());
         }
         filterChain.doFilter(request, response);
     }

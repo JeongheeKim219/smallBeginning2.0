@@ -1,4 +1,4 @@
-function removeAllToDoOnCalendar() {
+function removeAllTodoOnCalendar() {
     var tdList = $("#calendar-body tr td");
     for (var i = 0; i < tdList.length; i++){
         if ($(tdList[i]).children().length > 1){
@@ -7,7 +7,7 @@ function removeAllToDoOnCalendar() {
     }
 }
 
-function checkToDoOnCalendar(trId, result) {
+function checkTodoOnCalendar(trId, result) {
     var selectorStr = "#td-ct-" + trId.slice(-2);
 
     if (result == 1){
@@ -25,7 +25,7 @@ function checkToDoOnCalendar(trId, result) {
 
 function addTodoOnCalendar(result){
     // 기존의 Div를 모두 지운다.
-    removeAllToDoOnCalendar()
+    removeAllTodoOnCalendar()
 
     for (var i = 0; i < result.length; i++){
         var $div = document.createElement('div');

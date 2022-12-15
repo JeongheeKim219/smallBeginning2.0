@@ -5,8 +5,8 @@ import com.project.smallbeginjava11.oauth.dto.MemberDto;
 import com.project.smallbeginjava11.oauth.service.OAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 
@@ -19,22 +19,17 @@ public class MemberController {
     private OAuthService oAuthService;
 
     @GetMapping("/")
-    public String getIndex(Principal principal) {
-        String uri = "index";
+    public ModelAndView getIndex(Principal principal) {
+        ModelAndView model = new ModelAndView();
+        model.addObject("isAuthenticated", false);
+        model.setViewName("index");
         if (principal != null) {
-            uri = "redirect:/member/info";
+            Member member = oAuthService.getMember(Long.valueOf(principal.getName()));
+            MemberDto memberDto = convertToDto(member);
+            model.addObject("member", memberDto);
+            model.addObject("isAuthenticated", true);
         }
-        return uri;
+        return model ;
     }
-
-    @GetMapping("/member/info")
-    public String getMemberInfo(Principal principal, Model model) {
-        Member member = oAuthService.getMember(Long.valueOf(principal.getName()));
-        MemberDto memberDto = convertToDto(member);
-
-        model.addAttribute("member", memberDto);
-        return "index";
-    }
-
 
 }

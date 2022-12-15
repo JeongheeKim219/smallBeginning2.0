@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <title>Small Beginning</title>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link th:href="@{/css/common.css}" rel="stylesheet" />
-<link th:href="@{/css/calendar3.css}" rel="stylesheet" />
+<link th:href="@{/css/calendar.css}" rel="stylesheet" />
 <link th:href="@{/css/resetCSS.css}" rel="stylesheet" />
-<script th:src="@{/js/calendarDataShow.js}"></script>
+<link th:href="@{/css/calendarLeft.css}" rel="stylesheet" />
+<script>
+    var isAuthenticated = "[[${isAuthenticated}]]";
+</script>
 <script th:src="@{/js/calendar.js}"></script>
-<script th:src="@{/js/todoCRUD.js}"></script>
+<script th:src="@{/js/todoCalendar.js}"></script>
+<script th:src="@{/js/todoTable.js}"></script>
 <script th:src="@{/js/common.js}"></script>
 <script th:src="@{/js/login.js}"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-
-
-
 </head>
 <body>
-<th:block th:replace="fragment/sideMenu :: sideMenuFragment"></th:block>
+<th:block th:replace="fragment/calendarLeft :: sideMenuFragment"></th:block>
 <div id="container">
     <div class="main">
         <div class="content-wrap">
@@ -56,11 +56,12 @@
 <script>
 $(function(){
 
-<!--    readToDoInMonth();-->
+    readTodoInMonth();
+    readTodoOnDate();
+
     attachMain();
     var mainThisMonth = clickDate();
     inputPlanDate();
-<!--    readToDoOnDate();-->
 
     $("#prev").click(function(){
         mainThisMonth = prev(mainThisMonth);
@@ -89,7 +90,9 @@ $(function(){
         var plannedTo = $('#plannedTo').val();
         console.log(plannedTo);
         var todoContent = $("#todoContent").val();
-        if(!todoContent) {
+        if(!isAuthenticated) {
+            alert('로그인해주세요');
+        } else if(!todoContent) {
             alert('내용을 입력해주세요');
         } else{
             readForm("#todoList", "/insertTodoList");
@@ -98,9 +101,10 @@ $(function(){
 
     $('#calendar td').click(function(){
         var tdID = $(this).attr('id');
-        var param4readToDo = getDate4Ajax(tdID);
-        readToDoOnDate();
-        readToDoInMonth(param4readToDo);
+        var param4readTodo = getDate4Ajax(tdID);
+        readTodoOnDate();
+        readTodoInMonth(param4readTodo);
+
     });
 
     $('#todoListsTable').on("click", ".delete", function(){
@@ -141,7 +145,7 @@ $(function(){
 
     $("#todoListsTable").on("click", ".state", function(){
         console.log(this.parentNode.id, this.innerText);
-        checkToDo(this.parentNode.id, this.innerText);
+        checkTodo(this.parentNode.id, this.innerText);
     });
 
     $("#login").on("click", function(){
@@ -149,11 +153,10 @@ $(function(){
     });
 
     $("#logout").on("click", function(){
-        window.location.href = "/oauth/logout";
+        window.location.href = "/logout";
     });
 
    loadCalendar();
-
 });
 
 </script>

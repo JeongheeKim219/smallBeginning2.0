@@ -14,7 +14,6 @@ public class GoogleOAuthProperties {
     private String clientSecret;
     private String scope;
     private String responseType;
-    // TODO: 배포환경에서 prompt 삭제하기
     private String prompt;
     private String accessType;
     private String redirectUri;
