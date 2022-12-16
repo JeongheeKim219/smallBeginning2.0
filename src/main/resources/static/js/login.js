@@ -1,23 +1,37 @@
-function loginProcess(){
-    var userId = $('input[name="userId"]').val();
-    var password = $('input[name="password"]').val();
-    var loginData = {"memberId" : userId, "password" : password};
+const clientId = '65473999009-3hch27kdnnd73dmj2uuk5u8t5u28a0mq.apps.googleusercontent.com';
+const redirectUri = 'http://localhost:8080/oauth/login/google';
 
-     $.ajax({
-             url : "/loginProcess",
-             type : "post",
-             contentType: 'application/json; charset=utf-8',
-             dataType : "text",
-             data : JSON.stringify(loginData),
-             success : function(result){
-                if(result == "failed"){
-                    alert("Wrong ID or Password");
-                }else{
-                    window.location.href = "/calendar1";
-                }
-             },
-             error : function(err){
-                 console.log(err+"에러발생");
-             }
-      });
-}
+/*
+   * Create form to request access token from Google's OAuth 2.0 server.
+   */
+  function oauth2SignIn() {
+    // Google's OAuth 2.0 endpoint for requesting an access token
+    var oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
+
+    // Create element to open OAuth 2.0 endpoint in new window.
+    var form = document.createElement('form');
+    form.setAttribute('method', 'GET'); // Send as a GET request.
+    form.setAttribute('action', oauth2Endpoint);
+
+    // Parameters to pass to OAuth 2.0 endpoint.
+    var params = {'client_id': clientId,
+                  'redirect_uri': redirectUri,
+                  'include_granted_scopes': 'true',
+                  'scope': 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+                  'response_type': 'code',
+                  'access_type': 'offline',
+                  'state': 'state_parameter_passthrough_value'};
+
+    // Add form parameters as hidden input values.
+    for (var p in params) {
+      var input = document.createElement('input');
+      input.setAttribute('type', 'hidden');
+      input.setAttribute('name', p);
+      input.setAttribute('value', params[p]);
+      form.appendChild(input);
+    }
+
+    // Add form to page and submit it to open the OAuth 2.0 endpoint.
+    document.body.appendChild(form);
+    form.submit();
+  }

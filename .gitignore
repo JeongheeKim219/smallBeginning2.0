@@ -1,3 +1,8 @@
+<<<<<<<<< Temporary merge branch 1
+### Gradle template
+.gradle
+.idea
+=========
 HELP.md
 .gradle
 build/
@@ -38,10 +43,11 @@ out/
 .vscode/
 
 ### properties ###
-src/main/resources/application.properties
 src/main/resources/application-*.properties
+src/main/resources/application.properties
 src/main/resources/application.yml
 src/test/resources/application.properties
 src/test/resources/application-*.properties
 src/test/resources/application.yml
 /src/test/resources/
+

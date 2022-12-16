@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+</head>
+<body>
+<div th:fragment = "sideMenuFragment">
+    <div class="content-left">
+        <div id="logout" th:text="'logout'"></div>
+        <div id="login" th:text="'login'"></div>
+        <div class="main-wrap">
+            <span id="main-day" class="main-day"></span>
+            <span id="main-year" class="main-day"></span>
+            <span id="main-month" class="main-month"></span>
+            <span id="main-date" class="main-date"></span>
+        </div>
+        <div class="todo-wrap">
+            <div class="todo-title">You can add "todo list" here</div>
+            <td th:if="${member!= null}" th:text="${member.nickname}"/>
+            <div class="input-wrap">
+                <form method="post" id="todoList">
+                    <input type="text" placeholder="please write here" id="todoContent" class="input-box" name="todoContent">
+                    <input type="date" id="plannedTo" class="input-box" name="plannedTo" />
+                    <input type="color" id="todoColor" name="todoColor" value="#16aaad" list="colors4palette" />
+                    <datalist id="colors4palette">
+                        <option>#355070</option>
+                        <option>#6D597A</option>
+                        <option>#B56576</option>
+                        <option>#E56B6F</option>
+                        <option>#EAAC8B</option>
+                    </datalist>
+                    <button type="button" id="input-data" class="input-data">INPUT</button>
+                </form>
+                <table id="todoListsTable">
+                    <tr>
+                        <td>state</td><td>content</td><td></td><td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
