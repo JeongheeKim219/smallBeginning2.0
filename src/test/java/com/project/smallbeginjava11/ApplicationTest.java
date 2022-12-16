@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.project.smallbeginjava11.oauth.dto.MemberDto.convertToDto;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ContextConfiguration(classes = SmallBeginJava11Application.class)
@@ -93,4 +95,16 @@ public class ApplicationTest {
         todoDto.setTodoContent("컨텐츠 내용 변경용 입력");
         todoRepository.save(new Todo(todoDto, member));
     }
+
+    @Test
+    public void 전체_회원_조회() {
+        List<Member> memberList = memberRepository.findAll();
+        memberList.forEach(x -> System.out.println(convertToDto(x)));
+    }
+
+    @Test
+    public void 특정_회원_삭제() {
+        memberRepository.deleteById(Long.valueOf(21));
+    }
+
 }
