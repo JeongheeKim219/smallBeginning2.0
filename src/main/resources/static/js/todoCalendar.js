@@ -7,28 +7,32 @@ function removeAllTodoOnCalendar() {
     }
 }
 
-function checkTodoOnCalendar(todoId, result) {
+function checkTodoOnCalendar(todoId, result, resultStr) {
+    console.log(todoId);
+    console.log(todoId.length);
+    console.log(typeof todoId);
+    console.log('result :', result);
+    console.log('typeof result :', typeof result);
+    todoId = todoId.length < 2? "0" + todoId : todoId;
     var selectorCon = "#td-ct-" + todoId;
     var selectorCkt = "#td-ck-" + todoId;
     console.log('selectorCon :', selectorCon);
     console.log('selectorCkt :', selectorCkt);
-    console.log('result :', result);
 
-    $(selectorCkt).attr('data-state', result);
-    $(selectorCkt).html(setCheckboxByState(result));
-
-    if (result == 1){
+    if (result == "1"){
+        console.log("1~!");
         $(selectorCon).css('text-decoration', 'line-through');
         $(selectorCon).css('color', '#DADADA');
         $(selectorCon).parent().css('color', '#DADADA');
     } else{
+        console.log("0~!");
         $(selectorCon).css('text-decoration', 'none');
         $(selectorCon).css('color', '#000000');
         $(selectorCon).parent().css('color', '#000000');
     }
 
-
-
+    $(selectorCkt).attr('data-state', result);
+    $(selectorCkt).html(setCheckboxByState(result));
 }
 
 
@@ -38,11 +42,14 @@ function addTodoOnCalendar(result){
 
     for (var i = 0; i < result.length; i++){
         var $div = document.createElement('div');
+        var todoStr = String(result[i].todoId);
+        var todoId = todoStr.length < 2? "0" + todoStr : todoStr;
+        console.log('todoId :', todoId);
         $div.className = 'td-item';
-        $div.setAttribute('id', 'td-div-' + result[i].todoId);
+        $div.setAttribute('id', 'td-div-' + todoId);
         // DB의 to_do_content 데이터를 trim, 공백삭제
         var checker = document.createElement('span');
-        checker.setAttribute('id', 'td-ck-' + result[i].todoId);
+        checker.setAttribute('id', 'td-ck-' + todoId);
         checker.className = 'checker';
 
         // js 중 todoTable.js의 setCheckboxByState메소드를 활용
@@ -51,7 +58,7 @@ function addTodoOnCalendar(result){
         $div.appendChild(checker);
 
         var content = document.createElement('span');
-        content.setAttribute('id', 'td-ct-' + result[i].todoId);
+        content.setAttribute('id', 'td-ct-' + todoId);
         content.className = 'content'
         content.textContent = result[i].todoContent.replaceAll(" ", "").trim();
 
