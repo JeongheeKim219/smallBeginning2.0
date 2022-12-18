@@ -53,6 +53,7 @@ if (isAuthenticated != "true") return;
         dataType : "text",
         data : $(formId).serialize(),
         success : function(result){
+            readTodoOnDate();
             readTodoInMonth();
         },
         error : function(err){
@@ -76,8 +77,11 @@ function checkTodo(trId, todoState){
             "todoState" : todoState
         },
         success : function(result){
-            checkTodoInTable(todoId, result);
-            checkTodoOnCalendar(todoId, result);
+            var resultStr = setCheckboxByState(result);
+            console.log('resultStr---------------');
+            console.log(resultStr);
+            checkTodoInTable(todoId, result, resultStr);
+            checkTodoOnCalendar(todoId, result, resultStr);
         },
         error : function(err, resp){
             console.log(err+"에러발생");

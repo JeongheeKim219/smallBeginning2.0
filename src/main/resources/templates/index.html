@@ -10,6 +10,7 @@
 <script>
     var isAuthenticated = "[[${isAuthenticated}]]";
     console.log(isAuthenticated);
+    console.log(typeof isAuthenticated);
 </script>
 <script th:src="@{/js/calendar.js}"></script>
 <script th:src="@{/js/todoCalendar.js}"></script>
@@ -90,15 +91,14 @@ $(function(){
         var plannedTo = $('#plannedTo').val();
         console.log(plannedTo);
         var todoContent = $("#todoContent").val();
-        if(!isAuthenticated) {
+        if(isAuthenticated == "false") {
             alert('로그인해주세요');
         } else if(!todoContent) {
             alert('내용을 입력해주세요');
         } else{
-            readForm("#todoList", "/insertTodoList");
+            readTodoForm("#todoList", "/insertTodoList");
         }
     });
-
 
     var stillEditing = false;
     $('#todoListTable').on("click", ".delete", function(){
@@ -142,10 +142,13 @@ $(function(){
 
 
     $("#todoListTable").on("click", ".state", function(){
+        console.log('#todoListTable-----------------');
+        console.log(this);
         checkTodo(this.parentNode.id, this.dataset.state);
     });
 
     $("#calendar-body").on("click", ".checker", function(event){
+        console.log('#calendar-body-----------------');
         console.log(this);
         checkTodo(this.id, this.dataset.state);
     });
