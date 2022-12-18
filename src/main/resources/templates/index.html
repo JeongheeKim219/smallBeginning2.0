@@ -145,6 +145,11 @@ $(function(){
         checkTodo(this.parentNode.id, this.dataset.state);
     });
 
+    $("#calendar-body").on("click", ".checker", function(event){
+        console.log(this);
+        checkTodo(this.id, this.dataset.state);
+    });
+
     $("#login").on("click", function(){
         oauth2SignIn();
     });
