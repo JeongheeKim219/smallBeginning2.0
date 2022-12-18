@@ -2,14 +2,6 @@ html, body{
     background-color: #FFFFFF;
 }
 
-#session{
-    display: none;
-}
-
-#sessionCode{
-    display: none;
-}
-
 input#editColor {
     border: none;
     background: none;
@@ -19,33 +11,24 @@ input#editColor {
     padding: 0;
 }
 
-#login{
-    margin: 10px 0px 0px 42px
-    cursor: pointer;
-    font-size: 10px;
+#login, #logout{
+    display: inline-flex;
+    justify-content: center;
+    width: fit-content;
+    font-size: small;
     padding: 5px;
     background: #ffffff;
     border: 1px solid #000000;
     color: #000000;
     border-radius: 10px;
-    width: 20px;
     margin: 10px 0px 0px 42px;
     cursor: pointer;
 }
 
-#logout{
-    margin: 10px 0px 0px 42px
-    cursor: pointer;
-    font-size: 10px;
-    padding: 5px;
-    background: #ffffff;
-    border: 1px solid #000000;
-    color: #000000;
-    border-radius: 10px;
-    width: 20px;
-    margin: 10px 0px 0px 42px;
-    cursor: pointer;
+#nickname {
+    display: inline-flex;
 }
+
 
 #login:hover {
     background: #000000;
@@ -61,7 +44,7 @@ input#editColor {
     padding: 0 12px;
 }
 
-table#todoListsTable {
+table#todoListTable {
     width: 280px;
 }
 
@@ -77,6 +60,7 @@ td.content {
     height: 8%;
     margin-top: 5%;
 }
+
 .main{
     display: flex;
     align-items: center;
@@ -84,6 +68,7 @@ td.content {
     width: 100%;
     background: #ffffff;
 }
+
 .content-wrap{
     width: 100%;
     margin:0 auto;
@@ -170,22 +155,23 @@ td.content {
 }
 
 .main-wrap{
+    padding-top: 10px;
+    font-size: 30px;
+    font-weight: bold;
     text-align: left;
     margin: 0 0 0 40px;
     display: grid;
 }
 .main-day{
-    font-size: 30px;
-    font-weight: bold;
+
 }
 .main-date{
-    font-size: 30px;
-    font-weight: bold;
+
 }
 .main-month{
-    font-size: 30px;
-    font-weight: bold;
+
 }
+
 .todo-wrap{
     padding: 0 0 0 40px;
 }

@@ -7,8 +7,9 @@
 <body>
 <div th:fragment = "sideMenuFragment">
     <div class="content-left">
-        <div id="logout" th:text="'logout'"></div>
-        <div id="login" th:text="'login'"></div>
+        <div id="logout" th:if="${isAuthenticated==true}" th:text="'logout'"></div>
+        <div id="login" th:unless="${isAuthenticated==true}" th:text="'login'"></div>
+        <div id="nickname" th:if="${member!=null}" th:text="${member.nickname}"></div>
         <div class="main-wrap">
             <span id="main-day" class="main-day"></span>
             <span id="main-year" class="main-day"></span>
@@ -17,7 +18,6 @@
         </div>
         <div class="todo-wrap">
             <div class="todo-title">You can add "todo list" here</div>
-            <td th:if="${member!= null}" th:text="${member.nickname}"/>
             <div class="input-wrap">
                 <form method="post" id="todoList">
                     <input type="text" placeholder="please write here" id="todoContent" class="input-box" name="todoContent">
@@ -32,10 +32,7 @@
                     </datalist>
                     <button type="button" id="input-data" class="input-data">INPUT</button>
                 </form>
-                <table id="todoListsTable">
-                    <tr>
-                        <td>state</td><td>content</td><td></td><td></td>
-                    </tr>
+                <table id="todoListTable">
                 </table>
             </div>
         </div>

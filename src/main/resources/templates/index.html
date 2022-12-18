@@ -7,9 +7,9 @@
 <link th:href="@{/css/common.css}" rel="stylesheet" />
 <link th:href="@{/css/calendar.css}" rel="stylesheet" />
 <link th:href="@{/css/resetCSS.css}" rel="stylesheet" />
-<link th:href="@{/css/calendarLeft.css}" rel="stylesheet" />
 <script>
     var isAuthenticated = "[[${isAuthenticated}]]";
+    console.log(isAuthenticated);
 </script>
 <script th:src="@{/js/calendar.js}"></script>
 <script th:src="@{/js/todoCalendar.js}"></script>
@@ -99,53 +99,50 @@ $(function(){
         }
     });
 
-    $('#calendar td').click(function(){
-        var tdID = $(this).attr('id');
-        var param4readTodo = getDate4Ajax(tdID);
-        readTodoOnDate();
-        readTodoInMonth(param4readTodo);
 
-    });
+    var stillEditing = false;
+    $('#todoListTable').on("click", ".delete", function(){
+         if (stillEditing) {
+            $(".edit").css("pointer-events", "none");
+            alert("수정을 마쳐주세요.");
+            $(".editingContent").focus();
+            return;
+        }
 
-    $('#todoListsTable').on("click", ".delete", function(){
         var answer = confirm("삭제하시겠습니까?");
         if(answer){
-            var deleteId = $(this).attr('id');
+            var todoId = this.parentNode.id.slice(6);
             var selectedDate = $(".active").attr('id');
             var param4deleteTD = getDate4Ajax(selectedDate);
-            deleteTodo(deleteId, param4deleteTD);
+            deleteTodo(todoId, param4deleteTD);
         }
     });
 
-    $('#todoListsTable').on("click", ".edit", function(){
-        console.log("click");
-        var tr = $(this).attr('class');
-        var rowNum = tr.substr(5);
-        rowNum++;
-        var tableTr = document.getElementById("todoListsTable").getElementsByTagName("tr");
-        var selectedTr = tableTr[rowNum];
-        var contentCol = selectedTr.children[1];
-        var complete = selectedTr.children[3];
-
-        contentCol.id = "editContent";
-        complete.id = "complete";
-        complete.innerText = 'submit';
-        contentCol.contentEditable = 'true';
-
-        // submit 클릭 시 colorCol, contentCol에서 입력 받은 값을 updateTodo 메소드로 전달
-        $("#complete").on("click", function(){
-            var sendContent = $("#editContent").text();
-            var clickedDate = $(".active").attr("id");
-            var todoId = $(this).prev().attr("id");
-            editTodo(sendContent, clickedDate, todoId);
-            complete.innerText = 'edit';
-        });
-
+    $('#todoListTable').on("click", ".edit", function(){
+        if (stillEditing) {
+            $(".edit").css("pointer-events", "none");
+            alert("수정을 마쳐주세요.");
+            $(".editingContent").focus();
+        } else {
+            stillEditing = editTodoTable(this);
+        }
     });
 
-    $("#todoListsTable").on("click", ".state", function(){
-        console.log(this.parentNode.id, this.innerText);
-        checkTodo(this.parentNode.id, this.innerText);
+    $('#todoListTable').on("click", ".complete", function(){
+        var sendContent = $(this).parent().children(".editingContent").text();
+        var clickedDate = $(".active").attr("id");
+        var todoId = this.parentNode.id.slice(6);
+
+        console.log('sendContent :', sendContent);
+        console.log('clickedDate :', clickedDate);
+        console.log('todoId :', todoId);
+
+        stillEditing = editTodo(sendContent, clickedDate, todoId);
+    });
+
+
+    $("#todoListTable").on("click", ".state", function(){
+        checkTodo(this.parentNode.id, this.dataset.state);
     });
 
     $("#login").on("click", function(){
