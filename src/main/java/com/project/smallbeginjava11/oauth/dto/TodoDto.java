@@ -18,7 +18,6 @@ public class TodoDto extends BaseTimeEntity {
     private String todoContent;
     private LocalDateTime plannedTo;
     private int todoState;
-    private String todoColor;
     private LocalDateTime createdAt;
 
     public void setTodoId(Long todoId) {
@@ -41,16 +40,11 @@ public class TodoDto extends BaseTimeEntity {
         this.createdAt = createdAt;
     }
 
-    public void setTodoColor(String todoColor) {
-        this.todoColor = todoColor;
-    }
-
     public TodoDto(Todo todo) {
         this.todoId = todo.getTodoId();
         this.todoContent = todo.getTodoContent();
         this.plannedTo = todo.getPlannedTo();
         this.todoState = todo.getTodoState();
-        this.todoColor = todo.getTodoColor();
         this.createdAt = todo.getCreatedAt();
     }
 

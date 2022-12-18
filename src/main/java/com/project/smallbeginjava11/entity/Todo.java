@@ -34,10 +34,6 @@ public class Todo extends BaseTimeEntity {
     @ColumnDefault("'0'")
     private int todoState;
 
-
-    @ColumnDefault("'#000000'")
-    private String todoColor;
-
     @Builder
     public Todo(Member member, Long todoId, String todoContent, LocalDateTime plannedTo, int todoState, String todoColor) {
         this.member = member;
@@ -45,7 +41,6 @@ public class Todo extends BaseTimeEntity {
         this.todoContent = todoContent;
         this.plannedTo = plannedTo;
         this.todoState = todoState;
-        this.todoColor = todoColor;
     }
 
     public Todo(TodoDto todoDto, Member member) {
@@ -54,8 +49,6 @@ public class Todo extends BaseTimeEntity {
         this.todoContent = todoDto.getTodoContent();
         this.plannedTo = todoDto.getPlannedTo();
         this.todoState = todoDto.getTodoState();
-        this.todoColor = todoDto.getTodoColor();;
-
     }
 
     public Todo(TodoDto todoDto) {
@@ -63,6 +56,5 @@ public class Todo extends BaseTimeEntity {
         this.todoContent = todoDto.getTodoContent();
         this.plannedTo = todoDto.getPlannedTo();
         this.todoState = todoDto.getTodoState();
-        this.todoColor = todoDto.getTodoColor();;
     }
 }
