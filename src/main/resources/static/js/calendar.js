@@ -298,46 +298,6 @@ function getDateFromId(idStr){
     }
 }
 
-
-function editTodo(result){
-    var resultTodo = JSON.parse(result);
-
-    if(resultTodo.length > 0){
-        var table4Todo = document.getElementById("todoListsTable");
-
-        for(var obj of resultTodo){
-            var values = Object.values(obj);
-
-            var newRaw = table4Todo.insertRow();
-            var color = newRaw.insertCell(0);
-            var content = newRaw.insertCell(1);
-            var state = newRaw.insertCell(2);
-            var deleteBtn = newRaw.insertCell(3);
-            var editBtn = newRaw.insertCell(4);
-
-            color.innerText = "●";
-            color.id = values[5];
-            deleteBtn.id = values[0];
-            color.classList.add("color");
-            content.classList.add("content");
-            deleteBtn.classList.add("delete");
-            editBtn.classList.add("edit");
-            editBtn.classList.add(i);
-
-            content.innerText = values[2];
-            state.innerText = values[4];
-            state.className = "state";
-            deleteBtn.innerText = "delete";
-            editBtn.innerText = "edit";
-
-            var tester = document.getElementById(values[5]);
-            var colorTodo = "#" + values[5];
-            $(tester).css("color", values[5]);
-            i++;
-        }
-    }
-}
-
 function removeAllChildElements(parentElement){
     while (parentElement.firstChild) {
       parentElement.removeChild(parentElement.firstChild);
@@ -355,11 +315,12 @@ function clickDate(pointDate){
     var param4readTodo = getDate4Ajax(clickedDate);
     readTodoInMonth(param4readTodo);
 
-    var tdList = $("#calendar-body td");
+    // 클릭한 td가 이전 달 혹은 다음 달의 날짜가 아니라면, 즉 당월에 해당하는 td일 때만 click 이벤트 걸기
+    var tdList = $("#calendar-body td.main-calendar");
     for (td of tdList){
         td.addEventListener('click', changeClickedDate);
         for (tdDiv of td.childNodes){
-                tdDiv.addEventListener('click', changeClickedDate);
+            tdDiv.addEventListener('click', changeClickedDate);
         }
     }
 
@@ -376,11 +337,11 @@ function clickDate(pointDate){
                     break;
                 }
             }
-
             clickedDateElement.classList.add('active');
             showCurrentDateOnLeft(getDateFromId(clickedDate));
             inputPlanDate(getDateFromId(clickedDate));
-            readTodoInMonth(getDate4Ajax(clickedDate));
+            readTodoInMonth(getDate4Ajax(clickedDate))
+            readTodoOnDate();
         }
     }
     return getDateFromId(clickedDate);

@@ -64,8 +64,7 @@ if (isAuthenticated != "true") return;
 
 function checkTodo(trId, todoState){
     if (isAuthenticated != "true") return;
-    var todoId = trId.slice(-2);
-    console.log(todoId)
+    var todoId = trId.slice(6);
 
     $.ajax({
         url : '/updateTodoState',
@@ -158,7 +157,8 @@ function deleteTodo(todoId, selectedDate){
             "todoId": todoId
         },
         success : function(result){
-            readTodoInMonth( selectedDate);
+            readTodoOnDate(selectedDate);
+            readTodoInMonth(selectedDate);
         },
         error : function(err){
             console.log(err+"error");
@@ -176,13 +176,16 @@ function editTodo(sendContent, clickedDate, todoId){
         dataType : "text",
         data : {
             "todoId" : todoId,
-            "todoContent" : sendContent},
+            "todoContent" : sendContent
+        },
         success : function(result){
             readTodoInMonth(getDate4Ajax(clickedDate));
             readTodoOnDate(getDate4Ajax(clickedDate));
+            return false;
         },
         error : function(err){
             console.log(err+"에러발생");
+            return false;
         }
     });
 }
