@@ -7,19 +7,28 @@ function removeAllTodoOnCalendar() {
     }
 }
 
-function checkTodoOnCalendar(trId, result) {
-    var selectorStr = "#td-ct-" + trId.slice(-2);
+function checkTodoOnCalendar(todoId, result) {
+    var selectorCon = "#td-ct-" + todoId;
+    var selectorCkt = "#td-ck-" + todoId;
+    console.log('selectorCon :', selectorCon);
+    console.log('selectorCkt :', selectorCkt);
+    console.log('result :', result);
+
+    $(selectorCkt).attr('data-state', result);
+    $(selectorCkt).html(setCheckboxByState(result));
 
     if (result == 1){
-        $(selectorStr).css('text-decoration', 'line-through');
-        $(selectorStr).css('color', '#DADADA');
-        $(selectorStr).parent().css('color', '#DADADA');
+        $(selectorCon).css('text-decoration', 'line-through');
+        $(selectorCon).css('color', '#DADADA');
+        $(selectorCon).parent().css('color', '#DADADA');
     } else{
-        $(selectorStr).css('text-decoration', 'none');
-        $(selectorStr).css('color', '#000000');
-        $(selectorStr).parent().css('color', '#000000');
-
+        $(selectorCon).css('text-decoration', 'none');
+        $(selectorCon).css('color', '#000000');
+        $(selectorCon).parent().css('color', '#000000');
     }
+
+
+
 }
 
 
@@ -35,8 +44,10 @@ function addTodoOnCalendar(result){
         var checker = document.createElement('span');
         checker.setAttribute('id', 'td-ck-' + result[i].todoId);
         checker.className = 'checker';
-        checker.textContent = "█";
-        checker.style.color = result[i].todoColor;
+
+        // js 중 todoTable.js의 setCheckboxByState메소드를 활용
+        checker.dataset.state = result[i].todoState;
+        checker.innerHTML = setCheckboxByState(result[i].todoState);
         $div.appendChild(checker);
 
         var content = document.createElement('span');

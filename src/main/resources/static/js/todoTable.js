@@ -73,8 +73,12 @@ function getDate4Ajax(idStr){
     }
 }
 
-function checkTodoInTable(trId, result){
+function checkTodoInTable(todoId, result){
+    var trId = "td-tr-" + todoId;
     var selectorStr = "#" + trId + " .state";
+    console.log('checkTodoInTable-----------');
+    console.log('selectorStr :', selectorStr);
+    console.log('result :', result);
     $(selectorStr).attr('data-state', result)
     $(selectorStr).html(setCheckboxByState(result));
 }

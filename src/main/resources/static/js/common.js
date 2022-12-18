@@ -76,8 +76,8 @@ function checkTodo(trId, todoState){
             "todoState" : todoState
         },
         success : function(result){
-            checkTodoInTable(trId, result);
-            checkTodoOnCalendar(trId, result);
+            checkTodoInTable(todoId, result);
+            checkTodoOnCalendar(todoId, result);
         },
         error : function(err, resp){
             console.log(err+"에러발생");
