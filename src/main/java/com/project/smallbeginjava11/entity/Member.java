@@ -9,10 +9,9 @@ import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Builder
 @Entity
-@Setter
+@Getter
 @Table(name = "Member")
 public class Member extends BaseTimeEntity implements Serializable {
 
