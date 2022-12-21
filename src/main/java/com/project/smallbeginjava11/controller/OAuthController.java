@@ -25,7 +25,7 @@ public class OAuthController {
 
 	@RequestMapping("/login/google")
 	public ResponseEntity loginWithGoogleOauth(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String authToken = oAuthService.loginOAuthGoogle(request);
+			String authToken = oAuthService.loginOAuthGoogle(request);
 
 		final ResponseCookie cookie = ResponseCookie.from("AUTH-TOKEN", authToken)
 				.httpOnly(true)

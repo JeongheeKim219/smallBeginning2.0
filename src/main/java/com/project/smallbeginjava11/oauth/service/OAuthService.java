@@ -9,6 +9,7 @@ import com.project.smallbeginjava11.entity.Member;
 import com.project.smallbeginjava11.entity.Role;
 import com.project.smallbeginjava11.oauth.config.JWTUtils;
 import com.project.smallbeginjava11.oauth.dto.GoogleOAuthTokenDto;
+import com.project.smallbeginjava11.oauth.dto.MemberDto;
 import com.project.smallbeginjava11.oauth.dto.OAuthAttributes;
 import com.project.smallbeginjava11.oauth.property.GoogleOAuthProperties;
 import com.project.smallbeginjava11.repository.MemberRepository;
@@ -37,6 +38,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
+
+import static com.project.smallbeginjava11.oauth.dto.MemberDto.convertToDto;
+import static com.project.smallbeginjava11.oauth.dto.MemberDto.toEntity;
 
 @Service
 public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
@@ -73,7 +77,7 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         if (member == null) {
             throw new IllegalArgumentException();
         }
-        member = createOrUpdateUser(member);
+        member = createOrUpdateMember(member);
         return jwtUtils.createToken(member, false);
     }
 
@@ -108,16 +112,17 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
     }
 
     @Transactional
-    public Member createOrUpdateUser(Member member) {
+    public Member createOrUpdateMember(Member member) {
         Member existingMember = memberRepository.findByEmail(member.getEmail()).orElse(null);
         if (existingMember == null) {
-            member.setRole(Role.MEMBER);
-            memberRepository.save(member);
+            MemberDto memberDto = convertToDto(existingMember);
+            memberRepository.save(toEntity(memberDto));
             return member;
         }
-        existingMember.setNickname(member.getNickname());
-        existingMember.setEmail(member.getEmail());
-        memberRepository.save(existingMember);
+        MemberDto memberDto = convertToDto(existingMember);
+        memberDto.setNickname(member.getNickname());
+        memberDto.setEmail(member.getEmail());
+        memberRepository.save(toEntity(memberDto));
         return existingMember;
     }
 
@@ -141,7 +146,6 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         Member member = memberRepository.findByEmail(attributes.getEmail())
                 .orElse(attributes.toEntity())
                 .update(attributes.getName());
-
         return memberRepository.save(member);
     }
 
@@ -157,7 +161,7 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         Member member = saveOrUpdate(attributes);
-        httpSession.setAttribute("user", member);
+        httpSession.setAttribute("member", member);
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(member.getRole())),

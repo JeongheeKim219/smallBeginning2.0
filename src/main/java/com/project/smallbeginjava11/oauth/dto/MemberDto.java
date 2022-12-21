@@ -2,6 +2,7 @@ package com.project.smallbeginjava11.oauth.dto;
 
 import com.project.smallbeginjava11.entity.BaseTimeEntity;
 import com.project.smallbeginjava11.entity.Member;
+import com.project.smallbeginjava11.entity.Role;
 import lombok.*;
 
 @NoArgsConstructor
@@ -25,8 +26,17 @@ public class MemberDto extends BaseTimeEntity {
         return MemberDto.builder()
                 .nickname(member.getNickname())
                 .email(member.getEmail())
-                .role(member.getRole())
+                .role(Role.MEMBER.getKey())
                 .build();
     }
+
+    public static final Member toEntity(MemberDto memberDto) {
+        return Member.builder()
+                .nickname(memberDto.getNickname())
+                .email(memberDto.getEmail())
+                .role(Role.MEMBER)
+                .build();
+    }
+
 
 }
