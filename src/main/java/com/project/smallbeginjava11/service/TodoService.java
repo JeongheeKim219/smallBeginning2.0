@@ -63,7 +63,6 @@ public class TodoService {
                         .todoContent(todoContent)
                         .plannedTo(plannedTo)
                         .todoState(0)
-                        .todoColor(todoColor)
                         .build();
         return todo;
     }

@@ -1,5 +1,5 @@
 const clientId = '65473999009-3hch27kdnnd73dmj2uuk5u8t5u28a0mq.apps.googleusercontent.com';
-const redirectUri = 'http://localhost:8080/oauth/login/google';
+const redirectUri = 'http://129.154.55.56:22/oauth/login/google';
 
 /*
    * Create form to request access token from Google's OAuth 2.0 server.
