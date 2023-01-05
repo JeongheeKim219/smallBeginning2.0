@@ -24,7 +24,6 @@ public class MemberController {
         model.addObject("isAuthenticated", false);
         model.setViewName("index");
         if (principal != null) {
-            System.out.println(principal);
             Member member = oAuthService.getMember(Long.valueOf(principal.getName()));
             MemberDto memberDto = convertToDto(member);
             model.addObject("member", memberDto);

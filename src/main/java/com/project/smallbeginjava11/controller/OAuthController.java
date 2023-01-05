@@ -34,7 +34,7 @@ public class OAuthController {
 				.secure(false)
 				.build();
 		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-		response.sendRedirect("http://localhost:8080/");
+		response.sendRedirect("http://129.154.55.56:22/");
 		return ResponseEntity.ok().build();
 	}
 
