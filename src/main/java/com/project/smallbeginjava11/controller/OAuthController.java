@@ -34,7 +34,7 @@ public class OAuthController {
 				.secure(false)
 				.build();
 		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-		response.sendRedirect("http://129.154.55.56:22/");
+		response.sendRedirect("http://sub10151307240.firstvcn.oraclevcn.com:8080/");
 		return ResponseEntity.ok().build();
 	}
 
