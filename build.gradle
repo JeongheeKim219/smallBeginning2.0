@@ -10,6 +10,10 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 
+bootJar {
+    mainClass = 'com.project.smallbeginjava11.SmallBeginJava11Application'
+}
+
 tasks.named("jar") {
     enabled=false
 }
