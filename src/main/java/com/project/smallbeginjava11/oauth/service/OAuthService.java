@@ -82,6 +82,7 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
     }
 
     public GoogleOAuthTokenDto exchangeCodeToToken(HttpServletRequest request) throws Exception {
+        String code = request.getParameter("code");
         HttpHeaders headers = new HttpHeaders();
         RestTemplate restTemplate = new RestTemplate();
 
