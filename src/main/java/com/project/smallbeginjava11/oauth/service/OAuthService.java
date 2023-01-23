@@ -116,14 +116,12 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         Member existingMember = memberRepository.findByEmail(member.getEmail()).orElse(null);
         if (existingMember == null) {
             MemberDto memberDto = convertToDto(existingMember);
-            memberRepository.save(toEntity(memberDto));
-            return member;
+            return memberRepository.save(toEntity(memberDto));;
         }
         MemberDto memberDto = convertToDto(existingMember);
         memberDto.setNickname(member.getNickname());
         memberDto.setEmail(member.getEmail());
-        memberRepository.save(toEntity(memberDto));
-        return existingMember;
+        return memberRepository.save(toEntity(memberDto));
     }
 
     private Member verifyIDToken(String idToken) {
@@ -164,7 +162,7 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         httpSession.setAttribute("member", member);
 
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(member.getRole())),
+                Collections.singleton(new SimpleGrantedAuthority(member.getRoleKey())),
                 attributes.getAttributes(),
                 attributes.getNameAttributeKey());
     }
