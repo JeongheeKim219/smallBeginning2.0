@@ -25,7 +25,7 @@ public class OAuthController {
 
 	@RequestMapping("/login/google")
 	public ResponseEntity loginWithGoogleOauth(HttpServletRequest request, HttpServletResponse response) throws Exception {
-			String authToken = oAuthService.loginOAuthGoogle(request);
+		String authToken = oAuthService.loginOAuthGoogle(request);
 
 		final ResponseCookie cookie = ResponseCookie.from("AUTH-TOKEN", authToken)
 				.httpOnly(true)
@@ -35,6 +35,8 @@ public class OAuthController {
 				.build();
 		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 		response.sendRedirect("https://a1.smallbeginning.today");
+//		response.sendRedirect("http://localhost:8080/oauth/login/google");
+//		response.sendRedirect("http://localhost:9090/");
 		return ResponseEntity.ok().build();
 	}
 

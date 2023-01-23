@@ -47,7 +47,7 @@ public class Member extends BaseTimeEntity implements Serializable {
         return this;
     }
 
-    public String getRole() {
+    public String getRoleKey() {
         return this.role.getKey();
     }
 
