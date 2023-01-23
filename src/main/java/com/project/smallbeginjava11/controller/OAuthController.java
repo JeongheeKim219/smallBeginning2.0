@@ -34,9 +34,9 @@ public class OAuthController {
 				.secure(false)
 				.build();
 		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-//		response.sendRedirect("https://a1.smallbeginning.today");
+		response.sendRedirect("https://a1.smallbeginning.today");
 //		response.sendRedirect("http://localhost:8080/oauth/login/google");
-		response.sendRedirect("http://localhost:9090/");
+//		response.sendRedirect("http://localhost:9090/");
 		return ResponseEntity.ok().build();
 	}
 
