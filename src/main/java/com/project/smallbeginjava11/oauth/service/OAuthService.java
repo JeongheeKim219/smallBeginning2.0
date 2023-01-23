@@ -116,7 +116,7 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         Member existingMember = memberRepository.findByEmail(member.getEmail()).orElse(null);
         if (existingMember == null) {
             MemberDto memberDto = convertToDto(existingMember);
-            return memberRepository.save(toEntity(memberDto));;
+            return memberRepository.save(toEntity(memberDto));
         }
         MemberDto memberDto = convertToDto(existingMember);
         memberDto.setNickname(member.getNickname());
