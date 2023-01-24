@@ -28,6 +28,7 @@ public class Todo extends BaseTimeEntity {
     private String todoContent;
 
     @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime plannedTo;
 
     @Column(nullable = false)
