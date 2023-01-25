@@ -53,8 +53,13 @@ public class TodoService {
     };
 
     public Todo mapToTodo(Map<String, Object> map, Member member) {
+        map.keySet().forEach(x-> System.out.println(x + ":"+ map.get(x)));
+
         String todoContent = String.valueOf(map.get("todoContent"));
         String plannedToStr = String.valueOf(map.get("plannedTo"));
+
+        System.out.println("map.get(\"plannedTo\") :" + map.get("plannedTo"));
+        System.out.println("plannedToStr :" + plannedToStr);
         LocalDateTime plannedTo = LocalDateTime.parse(plannedToStr, formatter);
         String todoColor = String.valueOf(map.get("todoColor"));
 
