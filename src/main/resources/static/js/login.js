@@ -1,5 +1,5 @@
 const clientId = '65473999009-3hch27kdnnd73dmj2uuk5u8t5u28a0mq.apps.googleusercontent.com';
-const redirectUri = 'https://a1.smallbeginning.today/oauth/login/google';
+const redirectUri = 'https://smallbeginning.today/oauth/login/google';
 
 /*
    * Create form to request access token from Google's OAuth 2.0 server.

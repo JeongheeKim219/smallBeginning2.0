@@ -38,19 +38,21 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa' //jpa
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // thymeleaf
     implementation 'com.h2database:h2' //jpa
-//    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
-    implementation ('com.oracle.ojdbc:ojdbc8:19.3.0.0'){ //oracle
-        exclude group: 'com.oracle.ojdbc', module: 'simplefan'
-        exclude group: 'com.oracle.ojdbc', module: 'ons'
-    }
+////    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+//    implementation ('com.oracle.ojdbc:ojdbc8:19.3.0.0'){ //oracle
+//        exclude group: 'com.oracle.ojdbc', module: 'simplefan'
+//        exclude group: 'com.oracle.ojdbc', module: 'ons'
+//    }
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' //OAuth
     implementation 'org.springframework.boot:spring-boot-starter-security' //Spring Security
     implementation "io.springfox:springfox-swagger-ui:3.0.0"
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.3'
     implementation 'junit:junit:4.13.1'
-    implementation 'com.oracle.database.security:oraclepki'
-    implementation 'com.oracle.database.security:osdt_core'
-    implementation 'com.oracle.database.security:osdt_cert'
+//    implementation 'com.oracle.database.security:oraclepki'
+//    implementation 'com.oracle.database.security:osdt_core'
+//    implementation 'com.oracle.database.security:osdt_cert'
+
+    implementation 'mysql:mysql-connector-java'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
     implementation 'com.google.api-client:google-api-client:1.30.10'
     annotationProcessor 'org.projectlombok:lombok'
