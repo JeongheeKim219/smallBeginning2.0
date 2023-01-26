@@ -16,8 +16,7 @@ import java.time.LocalDateTime;
 public class Todo extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TODO_SEQ_GNR")
-    @SequenceGenerator(sequenceName = "TODO_ID_SEQ", name = "TODO_SEQ_GNR", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long todoId;
 
     @ManyToOne
